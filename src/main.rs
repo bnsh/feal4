@@ -16,7 +16,7 @@ fn gx(x: u8, a: u8, b: u8) -> u8 {
 fn g0(inp1: u8, inp2: u8) -> u8 { gx(0, inp1, inp2) }
 fn g1(inp1: u8, inp2: u8) -> u8 { gx(1, inp1, inp2) }
 
-fn f(a: u8, b: u8, c: u8, d: u8) {
+fn f(a: u8, b: u8, c: u8, d: u8) -> (u8, u8, u8, u8) {
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.4
     // To really translate this from Bruce Schneier's diagram:
     // a = a0
@@ -28,7 +28,7 @@ fn f(a: u8, b: u8, c: u8, d: u8) {
     let v1 = a ^ b;
     let v2 = c ^ d;
     let v3 = g1(v1, v2);
-    let v4 = g0(v3, v4);
+    let v4 = g0(v2, v3);
     let v5 = g0(a, v3);
     let v6 = g1(d, v4);
     let ap = v5;
@@ -38,7 +38,7 @@ fn f(a: u8, b: u8, c: u8, d: u8) {
     (ap, bp, cp, dp)
 }
 
-fn fk(a0: u8, a1: u8, a2: u8, a3: u8, b0: u8, b1: u8, b2: u8, b3: u8) {
+fn fk(a0: u8, a1: u8, a2: u8, a3: u8, b0: u8, b1: u8, b2: u8, b3: u8) -> (u8, u8, u8, u8) {
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.6
     let v1 = a0 ^ a1;
     let v2 = a2 ^ a3;
