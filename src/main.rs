@@ -18,6 +18,13 @@ fn g1(inp1: u8, inp2: u8) -> u8 { gx(1, inp1, inp2) }
 
 fn f(a: u8, b: u8, c: u8, d: u8) {
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.4
+    // To really translate this from Bruce Schneier's diagram:
+    // a = a0
+    // b = b0 ^ a1
+    // c = b1 ^ a2
+    // d = a3
+    // Where b0 and b1 are the "keys":
+    //  "Function f takes the 32 bits of data and 16 bits of key material and mixes them together"
     let v1 = a ^ b;
     let v2 = c ^ d;
     let v3 = g1(v1, v2);
@@ -31,7 +38,22 @@ fn f(a: u8, b: u8, c: u8, d: u8) {
     (ap, bp, cp, dp)
 }
 
-fn fk(
+fn fk(a0: u8, a1: u8, a2: u8, a3: u8, b0: u8, b1: u8, b2: u8, b3: u8) {
+    // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.6
+    let v1 = a0 ^ a1;
+    let v2 = a2 ^ a3;
+    let v3 = v2 ^ b0;
+    let v4 = g1(v1, v3);
+    let v5 = v4 ^ b1;
+    let v6 = g0(v2, v5);
+    let v7 = v6 ^ b3;
+    let v8 = v4 ^ b2;
+    let f1 = g0(a0, v8);
+    let f2 = v4;
+    let f3 = v6;
+    let f4 = g1(a3, v7);
+    (f1, f2, f3, f4)
+}
 
 fn main() {
 }
