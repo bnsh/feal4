@@ -6,6 +6,31 @@
  * Actually, "Applied Cryptography" by Bruce Schneier has a section on FEAL in Chapter 13.4 (pp 308 on my copy).
  */
 
+fn u32tou8(inp: u32) -> (u8, u8, u8, u8) {
+    let a = ((inp >> 24) & 0x00ff) as u8;
+    let b = ((inp >> 16) & 0x00ff) as u8;
+    let c = ((inp >>  8) & 0x00ff) as u8;
+    let d = ((inp >>  0) & 0x00ff) as u8;
+
+    (a, b, c, d)
+}
+
+fn u8tou32(a: u8, b: u8, c: u8, d: u8) -> u32 {
+    let number = ((a as u32) << 24) | ((b as u32) << 16) | ((c as u32) << 8) | d as u32;
+    number
+}
+
+fn u32tou16(inp: u32) -> (u16, u16) {
+    let a = ((inp >> 16) & 0x00ffff) as u16;
+    let b = ((inp >>  0) & 0x00ffff) as u16;
+    (a, b)
+}
+
+fn u16tou32(a: u16, b: u16) -> u32 {
+    let number = ((a as u32) << 24) | b as u32;
+    number
+}
+
 fn gx(x: u8, a: u8, b: u8) -> u8 {
     // gx(a, b) = rotate left two bits((a+b+x) mod 256)
     let int = a.wrapping_add(b).wrapping_add(x);
@@ -53,6 +78,50 @@ fn fk(a0: u8, a1: u8, a2: u8, a3: u8, b0: u8, b1: u8, b2: u8, b3: u8) -> (u8, u8
     let f3 = v6;
     let f4 = g1(a3, v7);
     (f1, f2, f3, f4)
+}
+
+fn fk32(a: u32, b: u32) -> u32 {
+    let (a0, a1, a2, a3) = u32tou8(a);
+    let (b0, b1, b2, b3) = u32tou8(b);
+
+    let (o0, o1, o2, o3) = fk(a0, a1, a2, a3, b0, b1, b2, b3);
+    u8tou32(o0, o1, o2, o3)
+}
+
+fn keyround(a0: u32, b0: u32, d0: u32) -> (u16, u16, u32, u32, u32) {
+    let k01 = fk32(a0, b0);
+    let (k0, k1) = u32tou16(k01);
+    (k0, k1, b0, k01, a0)
+}
+
+fn keygen(a: u32, b: u32) -> (u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16) {
+    let d: u32 = 0;
+    let mut subkeys: [u16; 16] = [0_u16; 16];
+
+    for idx in 0..8 {
+        let (k0, k1, a1, b1, d) = keyround(a, b, d);
+        subkeys[idx*2 + 0] = k0;
+        subkeys[idx*2 + 1] = k1;
+    }
+
+    (
+        subkeys[0],
+        subkeys[1],
+        subkeys[2],
+        subkeys[3],
+        subkeys[4],
+        subkeys[5],
+        subkeys[6],
+        subkeys[7],
+        subkeys[8],
+        subkeys[9],
+        subkeys[10],
+        subkeys[11],
+        subkeys[12],
+        subkeys[13],
+        subkeys[14],
+        subkeys[15]
+    )
 }
 
 fn main() {
