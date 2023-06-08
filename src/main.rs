@@ -6,6 +6,22 @@
  * Actually, "Applied Cryptography" by Bruce Schneier has a section on FEAL in Chapter 13.4 (pp 308 on my copy).
  */
 
+fn u64tou32(inp: u64) -> (u32, u32) {
+    let a = ((inp >> 32) & 0x00ffffffff) as u32;
+    let b = ((inp >>  0) & 0x00ffffffff) as u32;
+    (a, b)
+}
+
+fn u32tou64(a: u32, b:u32) -> u64 {
+    let number = ((a as u64) << 32) | b as u64;
+    number
+}
+
+fn u16tou64(a: u16, b:u16, c: u16, d: u16) -> u64 {
+    let number = ((a as u64) << 48) | ((b as u64) << 32) | ((c as u64) << 16) | d as u64;
+    number
+}
+
 fn u32tou8(inp: u32) -> (u8, u8, u8, u8) {
     let a = ((inp >> 24) & 0x00ff) as u8;
     let b = ((inp >> 16) & 0x00ff) as u8;
@@ -26,9 +42,10 @@ fn u32tou16(inp: u32) -> (u16, u16) {
     (a, b)
 }
 
-fn u16tou32(a: u16, b: u16) -> u32 {
-    let number = ((a as u32) << 24) | b as u32;
-    number
+fn u16tou8(inp: u16) -> (u8, u8) {
+    let a = ((inp >> 8) & 0x00ff) as u8;
+    let b = ((inp >> 0) & 0x00ff) as u8;
+    (a, b)
 }
 
 fn gx(x: u8, a: u8, b: u8) -> u8 {
@@ -41,8 +58,9 @@ fn gx(x: u8, a: u8, b: u8) -> u8 {
 fn g0(inp1: u8, inp2: u8) -> u8 { gx(0, inp1, inp2) }
 fn g1(inp1: u8, inp2: u8) -> u8 { gx(1, inp1, inp2) }
 
-fn f(a: u8, b: u8, c: u8, d: u8) -> (u8, u8, u8, u8) {
+fn fyoutube(a: u8, b: u8, c: u8, d: u8) -> (u8, u8, u8, u8) {
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.4
+    // This is _actually_ from this YouTube video: https://www.youtube.com/watch?v=xav-GUO_o4s#t=965
     // To really translate this from Bruce Schneier's diagram:
     // a = a0
     // b = b0 ^ a1
@@ -50,6 +68,11 @@ fn f(a: u8, b: u8, c: u8, d: u8) -> (u8, u8, u8, u8) {
     // d = a3
     // Where b0 and b1 are the "keys":
     //  "Function f takes the 32 bits of data and 16 bits of key material and mixes them together"
+    // The reason for the difference between the YouTube video and what's in Bruce Schneier's diagram
+    // is that the YouTube video is illustrating differential cryptanalysis, and in differential
+    // cryptanalyis one is passing in _pairs_ of inputs, that differ in some specified way, while
+    // keeping the keys constant. If you have constant inputs, say k0 and k1 and k0 == k1 then
+    // k0 ^ k1 = 0 and 0 ^ a1 just becomes a1. (and similarly for 0 ^ a2 just becomes a2.)
     let v1 = a ^ b;
     let v2 = c ^ d;
     let v3 = g1(v1, v2);
@@ -62,6 +85,19 @@ fn f(a: u8, b: u8, c: u8, d: u8) -> (u8, u8, u8, u8) {
     let dp = v6;
     (ap, bp, cp, dp)
 }
+
+fn f(b: u16, a: u32) -> u32 {
+    // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.4
+    // b0, b1 are the "keys"
+    // a0, a1, a2, a3 are something. (Look at the diagram)
+
+    let (b0, b1) = u16tou8(b);
+    let (a0, a1, a2, a3) = u32tou8(a);
+
+    let (ap, bp, cp, dp) = fyoutube(a0, b0 ^ a1, b1 ^ a2, a3);
+    u8tou32(ap, bp, cp, dp)
+}
+
 
 fn fk(a0: u8, a1: u8, a2: u8, a3: u8, b0: u8, b1: u8, b2: u8, b3: u8) -> (u8, u8, u8, u8) {
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.6
@@ -89,22 +125,26 @@ fn fk32(a: u32, b: u32) -> u32 {
 }
 
 fn keyround(a0: u32, b0: u32, d0: u32) -> (u16, u16, u32, u32, u32) {
+    let b0 = b0 ^ d0;
     let k01 = fk32(a0, b0);
     let (k0, k1) = u32tou16(k01);
     (k0, k1, b0, k01, a0)
 }
 
-fn keygen(a: u32, b: u32) -> (u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16) {
-    let d: u32 = 0;
+fn keygen(a: u32, b: u32) -> [u16; 16] {
+    // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.5
+    let mut d: u32 = 0;
     let mut subkeys: [u16; 16] = [0_u16; 16];
 
+    let (mut a, mut b) = (a, b);
     for idx in 0..8 {
-        let (k0, k1, a1, b1, d) = keyround(a, b, d);
+        let (k0, k1, ap, bp, dp) = keyround(a, b, d);
         subkeys[idx*2 + 0] = k0;
         subkeys[idx*2 + 1] = k1;
+        (a, b, d) = (ap, bp, dp);
     }
 
-    (
+    [
         subkeys[0],
         subkeys[1],
         subkeys[2],
@@ -121,8 +161,69 @@ fn keygen(a: u32, b: u32) -> (u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, 
         subkeys[13],
         subkeys[14],
         subkeys[15]
-    )
+    ]
+}
+
+fn single_round_encrypt(k: u16, left: u32, right: u32) -> (u32, u32) {
+    let intermediate = f(k, right);
+    let newleft = left ^ intermediate;
+    let newright = left;
+    (newleft, newright)
+}
+
+fn feal4_raw(k: [u16; 16], plaintext: u64) -> u64 {
+    // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.3
+    println!("xor plaintext with {:04x}, {:04x}, {:04x}, {:04x}", k[8], k[9], k[10], k[11]);
+    let v1 = plaintext ^ u16tou64(k[8], k[9], k[10], k[11]);
+    println!("v1 = {:016x}", v1);
+    let (mut right, mut left) = u64tou32(v1); // This is _not_ a typo. Unfortunately, on the first "round"
+                                              // there is no "criss-crossing".. See the diagram, look at
+                                              // the _top_ (L0, R0)
+    println!("1: left={:08x}, right={:08x}", left, right);
+    left = left ^ right;
+
+    println!("2: left={:08x}, right={:08x}", left, right);
+    for x in 0..8 {
+        println!("k[{}] = {:04x}", x, k[x]);
+        println!("3: left={:08x}, right={:08x}", left, right);
+        (left, right) = single_round_encrypt(k[x], left, right);
+        println!("4: left={:08x}, right={:08x}", left, right);
+    }
+    println!("5: left={:08x}, right={:08x}", left, right);
+    let combined = u32tou64(left, right);
+    println!("combined = {:016x}", combined);
+    println!("xor ciphertext with {:04x}, {:04x}, {:04x}, {:04x}", k[12], k[13], k[14], k[15]);
+    let ciphertext = combined ^ u16tou64(k[12], k[13], k[14], k[15]);
+
+    ciphertext
+}
+
+fn encrypt(keybits: u64, plaintext: u64) -> u64 {
+    let (ka, kb) = u64tou32(keybits);
+    let k = keygen(ka, kb);
+    feal4_raw(k, plaintext)
+}
+
+fn decrypt(keybits: u64, ciphertext: u64) -> u64 {
+    let (ka, kb) = u64tou32(keybits);
+    let kraw = keygen(ka, kb);
+// k00 k01 k02 k03 k04 k05 k06 k07 k08 k09 k10 k11 k12 k13 k14 k15
+// k07 k06 k05 k04 k03 k02 k01 k00 k12 k13 k14 k15 k08 k09 k10 k11
+    let mapping : [usize; 16] = [7, 6, 5, 4, 3, 2, 1, 0, 12, 13, 14, 15, 8, 9, 10, 11];
+    let mut k : [u16; 16] = [0_u16; 16];
+    for (dstidx, srcidx) in mapping.iter().enumerate() {
+        k[dstidx] = kraw[*srcidx];
+    }
+    feal4_raw(k, ciphertext)
 }
 
 fn main() {
+    let key = 0x0102030405060708;
+    let plaintext = 0x1112131415161718;
+    let ciphertext = encrypt(key, plaintext);
+    println!("{:016x}", ciphertext);
+// 1ca3ab117394d12b
+// 1ca3ab117394d12b
+    let decrypted = decrypt(key, ciphertext);
+    println!("{:016x}", decrypted);
 }
