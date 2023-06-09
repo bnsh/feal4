@@ -95,9 +95,9 @@ fn f(b: u16, a: u32) -> u32 {
     let (a0, a1, a2, a3) = u32tou8(a);
 
     let (ap, bp, cp, dp) = fyoutube(a0, b0 ^ a1, b1 ^ a2, a3);
+
     u8tou32(ap, bp, cp, dp)
 }
-
 
 fn fk(a0: u8, a1: u8, a2: u8, a3: u8, b0: u8, b1: u8, b2: u8, b3: u8) -> (u8, u8, u8, u8) {
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.6
@@ -173,27 +173,18 @@ fn single_round_encrypt(k: u16, left: u32, right: u32) -> (u32, u32) {
 
 fn feal4_raw(k: [u16; 16], plaintext: u64) -> u64 {
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.3
-    println!("xor plaintext with {:04x}, {:04x}, {:04x}, {:04x}", k[8], k[9], k[10], k[11]);
-    let v1 = plaintext ^ u16tou64(k[8], k[9], k[10], k[11]);
-    println!("v1 = {:016x}", v1);
-    let (mut right, mut left) = u64tou32(v1); // This is _not_ a typo. Unfortunately, on the first "round"
-                                              // there is no "criss-crossing".. See the diagram, look at
-                                              // the _top_ (L0, R0)
-    println!("1: left={:08x}, right={:08x}", left, right);
+    // plaintext: ciphertext
+    let v1 = plaintext ^ u16tou64(k[8], k[9], k[10], k[11]); // combined
+    let (mut right, mut left) = u64tou32(v1);
+
     left = left ^ right;
 
-    println!("2: left={:08x}, right={:08x}", left, right);
     for x in 0..8 {
-        println!("k[{}] = {:04x}", x, k[x]);
-        println!("3: left={:08x}, right={:08x}", left, right);
         (left, right) = single_round_encrypt(k[x], left, right);
-        println!("4: left={:08x}, right={:08x}", left, right);
     }
-    println!("5: left={:08x}, right={:08x}", left, right);
-    let combined = u32tou64(left, right);
-    println!("combined = {:016x}", combined);
-    println!("xor ciphertext with {:04x}, {:04x}, {:04x}, {:04x}", k[12], k[13], k[14], k[15]);
-    let ciphertext = combined ^ u16tou64(k[12], k[13], k[14], k[15]);
+    left = left ^ right;
+    let combined = u32tou64(right, left); // v1
+    let ciphertext = combined ^ u16tou64(k[12], k[13], k[14], k[15]); // plaintext
 
     ciphertext
 }
@@ -226,4 +217,9 @@ fn main() {
 // 1ca3ab117394d12b
     let decrypted = decrypt(key, ciphertext);
     println!("{:016x}", decrypted);
+
+// fn f(b: u16, a: u32) -> u32 {
+    let c = f(0x1234, 0x12345678);
+    let p = f(0x1234, c);
+    println!("{:08x}", p);
 }
