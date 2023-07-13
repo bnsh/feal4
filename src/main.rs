@@ -49,6 +49,8 @@ fn u16tou8(inp: u16) -> (u8, u8) {
 }
 
 fn gx(x: u8, a: u8, b: u8) -> u8 {
+    // Compared against feal-8 from https://www.schneier.com/wp-content/uploads/2015/03/FEAL8-WI-2.zip
+    // and verified to be working.
     // gx(a, b) = rotate left two bits((a+b+x) mod 256)
     let int = a.wrapping_add(b).wrapping_add(x);
     let rot = ((int << 2) & 0xfc) | ((int & 0xc0) >> 6);
@@ -132,6 +134,9 @@ fn keyround(a0: u32, b0: u32, d0: u32) -> (u16, u16, u32, u32, u32) {
 }
 
 fn keygen(a: u32, b: u32) -> [u16; 16] {
+    // Key generation seems to differ between
+    // https://www.schneier.com/wp-content/uploads/2015/03/FEAL8-WI-2.zip
+    // and here.
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.5
     let mut d: u32 = 0;
     let mut subkeys: [u16; 16] = [0_u16; 16];
@@ -142,6 +147,10 @@ fn keygen(a: u32, b: u32) -> [u16; 16] {
         subkeys[idx*2 + 0] = k0;
         subkeys[idx*2 + 1] = k1;
         (a, b, d) = (ap, bp, dp);
+    }
+
+    for idx in 0..16 {
+        println!("subkeys[{:2}] = 0x{:04x}", idx, subkeys[idx]);
     }
 
     [
