@@ -165,11 +165,9 @@ fn keygen(a: u32, b: u32) -> [u16; 16] {
 }
 
 fn single_round_encrypt(k: u16, left: u32, right: u32) -> (u32, u32) {
-    let (right, left) = (left, right);
-    println!("    0x{:08x}, 0x{:08x}", left, right);
+    let (left, right) = (left, right);
     let intermediate = f(k, right);
-    println!("    0x{:08x}, 0x{:08x}", left, left ^ intermediate);
-    let (newleft, newright) = (left ^ intermediate, left);
+    let (newleft, newright) = (right, left ^ intermediate);
     (newleft, newright)
 }
 
@@ -177,19 +175,15 @@ fn feal4_raw(k: [u16; 16], input: u64) -> u64 {
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.3
     // input: output
     let v1 = input ^ u16tou64(k[8], k[9], k[10], k[11]); // combined
-    println!("    feal4_raw: input:  0x{:016x}", v1);
     let (mut left, mut right) = u64tou32(v1);
 
     right = left ^ right;
 
     for x in 0..8 {
-        let (oleft, oright) = (left, right);
         (left, right) = single_round_encrypt(k[x], left, right);
-        if x == 0 || x == 7 || x == 6 { println!("    single_round_encrypt(k[{}]=0x{:04x}, left=0x{:08x}, right=0x{:08x}) => 0x{:08x}, 0x{:08x}", x, k[x], oleft, oright, left, right); }
     }
     left = left ^ right;
     let combined = u32tou64(right, left); // v1
-    println!("    feal4_raw: output: 0x{:016x}", combined);
     let output = combined ^ u16tou64(k[12], k[13], k[14], k[15]); // input
 
     output
@@ -217,25 +211,10 @@ fn decrypt(keybits: u64, ciphertext: u64) -> u64 {
 fn main() {
     let key = 0x0102030405060708;
     let plaintext = 0x1112131415161718;
-    println!("plaintext  = {:016x}", plaintext);
-    println!("<encrypt>");
     let ciphertext = encrypt(key, plaintext);
-    println!("</encrypt>");
-    println!("ciphertext = {:016x}", ciphertext);
-// 1ca3ab117394d12b
-// 1ca3ab117394d12b
-    println!("<decrypt>");
     let decrypted = decrypt(key, ciphertext);
-    println!("</decrypt>");
-    println!("decrypted  = {:016x}", decrypted);
 
-    let (key, ileft, iright) = (0x83b4, 0xa110180a, 0x0ea488d8);
-    println!("<single>");
-    let (cleft, cright) = single_round_encrypt(key, ileft, iright);
-    println!("</single>");
-    println!("<single>");
-    let (pleft, pright) = single_round_encrypt(key, cleft, cright);
-    println!("</single>");
-    println!("single_round_encrypt(0x{key:04x}, 0x{ileft:08x}, 0x{iright:08x}) -> 0x{cleft:08x}, 0x{cright:08x}");
-    println!("single_round_encrypt(0x{key:04x}, 0x{cleft:08x}, 0x{cright:08x}) -> 0x{pleft:08x}, 0x{pright:08x}");
+    println!(" plaintext={plaintext:016x}");
+    println!("ciphertext={ciphertext:016x}");
+    println!(" decrypted={decrypted:016x}");
 }
