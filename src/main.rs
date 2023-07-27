@@ -6,9 +6,6 @@
  * Actually, "Applied Cryptography" by Bruce Schneier has a section on FEAL in Chapter 13.4 (pp 308 on my copy).
  */
 
-use rand::Rng;
-
-/*
 fn u64tou32(inp: u64) -> (u32, u32) {
     let a = ((inp >> 32) & 0x00ffffffff) as u32;
     let b = ((inp >>  0) & 0x00ffffffff) as u32;
@@ -24,7 +21,6 @@ fn u16tou64(a: u16, b:u16, c: u16, d: u16) -> u64 {
     let number = ((a as u64) << 48) | ((b as u64) << 32) | ((c as u64) << 16) | d as u64;
     number
 }
- */
 
 fn u32tou8(inp: u32) -> (u8, u8, u8, u8) {
     let a = ((inp >> 24) & 0x00ff) as u8;
@@ -40,13 +36,11 @@ fn u8tou32(a: u8, b: u8, c: u8, d: u8) -> u32 {
     number
 }
 
-/*
 fn u32tou16(inp: u32) -> (u16, u16) {
     let a = ((inp >> 16) & 0x00ffff) as u16;
     let b = ((inp >>  0) & 0x00ffff) as u16;
     (a, b)
 }
- */
 
 fn u16tou8(inp: u16) -> (u8, u8) {
     let a = ((inp >> 8) & 0x00ff) as u8;
@@ -117,7 +111,6 @@ fn f(b: u16, a: u32) -> u32 {
     u8tou32(ap, bp, cp, dp)
 }
 
-/*
 fn fk(a0: u8, a1: u8, a2: u8, a3: u8, b0: u8, b1: u8, b2: u8, b3: u8) -> (u8, u8, u8, u8) {
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.6
     let v1 = a0 ^ a1;
@@ -243,36 +236,4 @@ fn main() {
     println!(" plaintext={plaintext:016x}");
     println!("ciphertext={ciphertext:016x}");
     println!(" decrypted={decrypted:016x}");
-}
- */
-
-
-fn single(b: u16, a: u32) {
-    let u = f(b, a);
-    let (a0, a1, a2, a3) = u32tou8(a);
-    let (b0, b1) = u16tou8(b);
-    let (u0, u1, u2, u3) = u32tou8(u);
-    println!("\ta[0] = 0x{a0:02x}; a[1] = 0x{a1:02x}; a[2] = 0x{a2:02x}; a[3] = 0x{a3:02x};");
-    println!("\tb[0] = 0x{b0:02x}; b[1] = 0x{b1:02x};");
-    println!("\tf(a, b, U);");
-    println!("\tif ((U[0] == 0x{u0:02x}) && (U[1] == 0x{u1:02x}) && (U[2] == 0x{u2:02x}) && (U[3] == 0x{u3:02x})) {{");
-    println!("\t\tprintf(\"f(0x{a:08x}, 0x{b:04x}) Success. (0x{u:08x})\\n\");");
-    println!("\t}}\n");
-    println!("\telse {{\n");
-    println!("\t\tprintf(\"f(0x{a:08x}, 0x{b:04x}) Fail. (0x%02lx%02lx%02lx%02lx != 0x{u:08x})\\n\", U[0], U[1], U[2], U[3]);");
-    println!("\t}}\n");
-}
-
-fn main() {
-    let mut rng = rand::thread_rng();
-    let mut random_numbers: [(u16, u32); 16] = [(0, 0); 16];
-
-    for (b, a) in random_numbers.iter_mut() {
-        *b = rng.gen_range(0..=u16::MAX);
-        *a = rng.gen_range(0..=u32::MAX);
-    }
-
-    for (b, a) in random_numbers.iter() {
-        single(*b, *a);
-    }
 }
