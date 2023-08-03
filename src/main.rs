@@ -153,19 +153,24 @@ fn keygen(a: u32, b: u32) -> [u16; 16] {
     // https://www.schneier.com/wp-content/uploads/2015/03/FEAL8-WI-2.zip
     // and here.
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.5
+    // Compared against feal-8 from https://www.schneier.com/wp-content/uploads/2015/03/FEAL8-WI-2.zip
+    // This function (keygen) corresponds to FEAL_key_schedule in that code.
+    //      a in this code corresponds to key0
+    //      b in this code corresponds to key1
+    // This is _failing_ against the reference.
     let mut d: u32 = 0;
     let mut subkeys: [u16; 16] = [0_u16; 16];
 
     let (mut a, mut b) = (a, b);
     for idx in 0..8 {
         let (k0, k1, ap, bp, dp) = keyround(a, b, d);
+        // a in our code is U1 in the reference.
+        // b in our code is V in the reference.
+        // d in our code is U2 in the reference.
+        // k1 in our code is U in the reference.
         subkeys[idx*2 + 0] = k0;
         subkeys[idx*2 + 1] = k1;
         (a, b, d) = (ap, bp, dp);
-    }
-
-    for idx in 0..16 {
-        println!("subkeys[{:2}] = 0x{:04x}", idx, subkeys[idx]);
     }
 
     [
@@ -232,21 +237,51 @@ fn decrypt(keybits: u64, ciphertext: u64) -> u64 {
     feal4_raw(k, ciphertext)
 }
 
-fn single(a: u32, b: u32) {
-    let u = fk32(a, b);
+fn single(key0: u32, key1: u32) {
+    let k = keygen(key0, key1);
 
-    let (a0, a1, a2, a3) = u32tou8(a);
-    let (b0, b1, b2, b3) = u32tou8(b);
-    let (u0, u1, u2, u3) = u32tou8(u);
-
-    println!("\ta[0] = 0x{a0:02x}; a[1] = 0x{a1:02x}; a[2] = 0x{a2:02x}; a[3] = 0x{a3:02x};");
-    println!("\tb[0] = 0x{b0:02x}; b[1] = 0x{b1:02x}; b[2] = 0x{b2:02x}; b[3] = 0x{b3:02x};");
-    println!("\tfK(a, b, U);");
-    println!("\tif ((U[0] == 0x{u0:02x}) && (U[1] == 0x{u1:02x}) && (U[2] == 0x{u2:02x}) && (U[3] == 0x{u3:02x})) {{");
-    println!("\t\tprintf(\"f(0x{a:08x}, 0x{b:04x}) Success. (0x{u:08x})\\n\");");
+    println!("\tkey0 = 0x{key0:08x}; key1 = 0x{key1:08x};");
+    println!("\tFEAL_key_schedule(key0, key1, K);");
+    print!("\t if (");
+    for i in 0..16 {
+        if i > 0 {
+            print!(" && ");
+        }
+        print!("(K[{}] == 0x{:02x})", i, k[i]);
+    }
+    println!(") {{");
+    print!("\t\tprintf(\"f(0x{key0:08x}, 0x{key1:04x}) Success. (");
+    for i in 0..16 {
+        if i > 0 {
+            print!(", ");
+        }
+        print!("0x{:04x}", k[i]);
+    }
+    println!(")\\n\");");
     println!("\t}}\n");
     println!("\telse {{\n");
-    println!("\t\tprintf(\"f(0x{a:08x}, 0x{b:04x}) Fail. (0x%02lx%02lx%02lx%02lx != 0x{u:08x})\\n\", U[0], U[1], U[2], U[3]);");
+    print!("\t\tprintf(\"f(0x{key0:08x}, 0x{key1:04x}) Fail. (");
+    for i in 0..16 {
+        if i > 0 {
+            print!(", ");
+        }
+        print!("0x{:04x}", k[i]);
+    }
+    print!(") != (");
+    for i in 0..16 {
+        if i > 0 {
+            print!(", ");
+        }
+        print!("0x%04lx");
+    }
+    print!(")\\n\", ");
+    for i in 0..16 {
+        if i > 0 {
+            print!(", ");
+        }
+        print!("K[{}]", i);
+    }
+    println!(");");
     println!("\t}}\n");
 }
 
@@ -262,19 +297,18 @@ fn main() {
         println!("ciphertext={ciphertext:016x}");
         println!(" decrypted={decrypted:016x}");
     }
-    else {
-// fn fk(a0: u8, a1: u8, a2: u8, a3: u8, b0: u8, b1: u8, b2: u8, b3: u8) -> (u8, u8, u8, u8) {
+    else if mode == 1 {
+// fn keygen(a: u32, b: u32) -> [u16; 16] {
         let mut rng = rand::thread_rng();
         let mut random_numbers: [(u32, u32); 16] = [(0, 0); 16];
 
-        for (a, b) in random_numbers.iter_mut() {
-            *a = rng.gen_range(0..=u32::MAX);
-            *b = rng.gen_range(0..=u32::MAX);
+        for (key0, key1) in random_numbers.iter_mut() {
+            *key0 = rng.gen_range(0..=u32::MAX);
+            *key1 = rng.gen_range(0..=u32::MAX);
         }
 
-        for (a, b) in random_numbers.iter() {
-            single(*a, *b);
+        for (key0, key1) in random_numbers.iter() {
+            single(*key0, *key1);
         }
-
     }
 }
