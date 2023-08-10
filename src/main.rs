@@ -142,8 +142,8 @@ fn fk32(a: u32, b: u32) -> u32 {
 }
 
 fn keyround(a0: u32, b0: u32, d0: u32) -> (u16, u16, u32, u32, u32) {
-    let b0 = b0 ^ d0;
-    let k01 = fk32(a0, b0);
+    let v = b0 ^ d0;
+    let k01 = fk32(a0, v);
     let (k0, k1) = u32tou16(k01);
     (k0, k1, b0, k01, a0)
 }
@@ -157,19 +157,34 @@ fn keygen(a: u32, b: u32) -> [u16; 16] {
     // This function (keygen) corresponds to FEAL_key_schedule in that code.
     //      a in this code corresponds to key0
     //      b in this code corresponds to key1
+    //      subkeys in this code corresponds to K
+    //      idx in this code corresponds to i-1 in their code. (They run from 1..8 inclusive, whereas we run from 0..7 inclusive)
+    //      a in this code corresponds to U1
+    //      b in this code corresponds to U0
+    //      d in this code corresponds to U2
+    //      ap in this code corresponds to V
+    //      bp in this code corresponds to U
+    //      dp in this code corresponds to U1
+    //           -- "k01" in keyround corresponds to U
+    //      So. k0, k1 corresponds to U. Is it possible that k0, k1 are flipped?
     // This is _failing_ against the reference.
+    // Things first mess up at idx=2 (or i=3 in the c-reference)
     let mut d: u32 = 0;
     let mut subkeys: [u16; 16] = [0_u16; 16];
 
     let (mut a, mut b) = (a, b);
     for idx in 0..8 {
         let (k0, k1, ap, bp, dp) = keyround(a, b, d);
+
         // a in our code is U1 in the reference.
-        // b in our code is V in the reference.
+        // b in our code is U0 in the reference
+        // bp in our code is V in the reference.
         // d in our code is U2 in the reference.
-        // k1 in our code is U in the reference.
+        // k01 in our code is U in the reference.
         subkeys[idx*2 + 0] = k0;
         subkeys[idx*2 + 1] = k1;
+        // U2, U1, U0 = U1, U0, U
+        // d, a, b = U1, U0, U
         (a, b, d) = (ap, bp, dp);
     }
 
@@ -237,59 +252,11 @@ fn decrypt(keybits: u64, ciphertext: u64) -> u64 {
     feal4_raw(k, ciphertext)
 }
 
-fn single(key0: u32, key1: u32) {
-    let k = keygen(key0, key1);
-
-    println!("\tkey0 = 0x{key0:08x}; key1 = 0x{key1:08x};");
-    println!("\tFEAL_key_schedule(key0, key1, K);");
-    print!("\t if (");
-    for i in 0..16 {
-        if i > 0 {
-            print!(" && ");
-        }
-        print!("(K[{}] == 0x{:02x})", i, k[i]);
-    }
-    println!(") {{");
-    print!("\t\tprintf(\"f(0x{key0:08x}, 0x{key1:04x}) Success. (");
-    for i in 0..16 {
-        if i > 0 {
-            print!(", ");
-        }
-        print!("0x{:04x}", k[i]);
-    }
-    println!(")\\n\");");
-    println!("\t}}\n");
-    println!("\telse {{\n");
-    print!("\t\tprintf(\"f(0x{key0:08x}, 0x{key1:04x}) Fail. (");
-    for i in 0..16 {
-        if i > 0 {
-            print!(", ");
-        }
-        print!("0x{:04x}", k[i]);
-    }
-    print!(") != (");
-    for i in 0..16 {
-        if i > 0 {
-            print!(", ");
-        }
-        print!("0x%04lx");
-    }
-    print!(")\\n\", ");
-    for i in 0..16 {
-        if i > 0 {
-            print!(", ");
-        }
-        print!("K[{}]", i);
-    }
-    println!(");");
-    println!("\t}}\n");
-}
-
 fn main() {
-    let mode : u32 = 1;
+    let mode = 0;
     if mode == 0 {
-        let key = 0x0102030405060708;
-        let plaintext = 0x1112131415161718;
+        let key = 0x0123456789abcdef;
+        let plaintext = 0x0;
         let ciphertext = encrypt(key, plaintext);
         let decrypted = decrypt(key, ciphertext);
 
@@ -297,18 +264,21 @@ fn main() {
         println!("ciphertext={ciphertext:016x}");
         println!(" decrypted={decrypted:016x}");
     }
-    else if mode == 1 {
-// fn keygen(a: u32, b: u32) -> [u16; 16] {
+    else {
         let mut rng = rand::thread_rng();
-        let mut random_numbers: [(u32, u32); 16] = [(0, 0); 16];
+        let mut random_numbers: [(u64, u64); 16] = [(0, 0); 16];
 
         for (key0, key1) in random_numbers.iter_mut() {
-            *key0 = rng.gen_range(0..=u32::MAX);
-            *key1 = rng.gen_range(0..=u32::MAX);
+            *key0 = rng.gen_range(0..=u64::MAX);
+            *key1 = rng.gen_range(0..=u64::MAX);
         }
 
-        for (key0, key1) in random_numbers.iter() {
-            single(*key0, *key1);
+        println!("#define KEYCOUNT 16");
+        println!("  testset testsets[KEYCOUNT] = {{");
+        for (key, plaintext) in random_numbers.iter() {
+            let ciphertext = encrypt(*key, *plaintext);
+            println!("    {{ 0x{key:016x}, 0x{plaintext:016x}, 0x{ciphertext:016x} }},");
         }
+        println!("  }};");
     }
 }
