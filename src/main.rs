@@ -154,21 +154,8 @@ fn keygen(a: u32, b: u32) -> [u16; 16] {
     // and here.
     // "Applied Cryptography" Bruce Schneier 13.4 Figure 13.5
     // Compared against feal-8 from https://www.schneier.com/wp-content/uploads/2015/03/FEAL8-WI-2.zip
+    // and verified to be working!
     // This function (keygen) corresponds to FEAL_key_schedule in that code.
-    //      a in this code corresponds to key0
-    //      b in this code corresponds to key1
-    //      subkeys in this code corresponds to K
-    //      idx in this code corresponds to i-1 in their code. (They run from 1..8 inclusive, whereas we run from 0..7 inclusive)
-    //      a in this code corresponds to U1
-    //      b in this code corresponds to U0
-    //      d in this code corresponds to U2
-    //      ap in this code corresponds to V
-    //      bp in this code corresponds to U
-    //      dp in this code corresponds to U1
-    //           -- "k01" in keyround corresponds to U
-    //      So. k0, k1 corresponds to U. Is it possible that k0, k1 are flipped?
-    // This is _failing_ against the reference.
-    // Things first mess up at idx=2 (or i=3 in the c-reference)
     let mut d: u32 = 0;
     let mut subkeys: [u16; 16] = [0_u16; 16];
 
