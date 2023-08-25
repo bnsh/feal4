@@ -10,6 +10,7 @@ use rand::Rng;
 pub mod feal;
 
 fn main() {
+/*
     let mode = 0;
     if mode == 0 {
         let key = 0x0123456789abcdef;
@@ -38,8 +39,9 @@ fn main() {
         }
         println!("  }};");
     }
+*/
 
-/*
+/* */
     let mut rng = rand::thread_rng();
     let mut keyplaintextpairs: [(u16, u32); 256] = [(0, 0); 256];
     for (key, plaintext) in keyplaintextpairs.iter_mut() {
@@ -49,10 +51,25 @@ fn main() {
 
     for (key, plaintext) in keyplaintextpairs.iter() {
         let xoredplaintext = *plaintext ^ 0x80808080;
+        // let xoredplaintext = *plaintext ^ 0x40404040;
+        // let xoredplaintext = *plaintext ^ 0x20202020;
         let cipher = feal::f(*key, *plaintext);
         let xoredcipher = feal::f(*key, xoredplaintext);
 
         println!("{:08x} {:08x}", *plaintext ^ xoredplaintext, cipher ^ xoredcipher);
+    }
+/* */
+
+/*
+    for key in 0..=255 {
+        let plain_xor = 0x40;
+        for plain1 in 0..=255 {
+            let plain2 = plain1 ^ plain_xor;
+            let cipher1 = feal::g0(plain1, key);
+            let cipher2 = feal::g0(plain2, key);
+            let cipher_xor = cipher1 ^ cipher2;
+            println!("key={:02x}, p1={:02x}, p2={:02x}, {:02x}", key, plain1, plain2, cipher_xor);
+        }
     }
 */
 
