@@ -84,6 +84,7 @@ class Concatenate(Node):
 
 #pylint: disable=invalid-name,too-few-public-methods
 class F(Node):
+    """Binesh - 2023-08-25 have tested this against the rust version, and verified that this works."""
     def __init__(self, subkey, value):
         assert subkey.bitsz == 16
         assert value.bitsz == 32
@@ -91,10 +92,48 @@ class F(Node):
         self.subkey = subkey
         self.value = value
 
+    @staticmethod
+    def gx(x, a, b):
+        int_ = (a + b + x) & 0x00ff
+        rot = ((int_ << 2) & 0x00fc) | ((int_ & 0x00c0) >> 6)
+        return rot
+
+    def g0(self, inp1, inp2):
+        return self.gx(0, inp1, inp2)
+
+    def g1(self, inp1, inp2):
+        return self.gx(1, inp1, inp2)
+
+    def fyoutube(self, a, b, c, d):
+        """This is a translation of the function directly from ../src/feal.rs"""
+        v1 = a ^ b
+        v2 = c ^ d
+        v3 = self.g1(v1, v2)
+        v4 = self.g0(v2, v3)
+        v5 = self.g0(a, v3)
+        v6 = self.g1(d, v4)
+        ap = v5
+        bp = v3
+        cp = v4
+        dp = v6
+        return ap, bp, cp, dp
+
     def eval(self):
-        # TODO: Here we just want to implement F directly. the purpose here isn't to fully create the whole algorithm this way,
-        #       Simply to eventually output a graph of the computation (akin to Fig 13.3 in "Applied Cryptography" by Bruce Schneier.
-        raise RuntimeError("Unimplemented")
+        subkey = self.subkey.eval()
+        b0 = ((subkey & 0xff00) >> 8) & 0x00ff
+        b1 = subkey & 0x00ff
+
+        value = self.value.eval()
+        a0 = ((value & 0xff000000) >> 24) & 0x00ff
+        a1 = ((value & 0x00ff0000) >> 16) & 0x00ff
+        a2 = ((value & 0x0000ff00) >>  8) & 0x00ff
+        a3 = value & 0x000000ff
+
+        ap, bp, cp, dp = self.fyoutube(a0, b0 ^ a1, b1 ^ a2, a3)
+
+        combined = (ap << 24) | (bp << 16) | (cp << 8) | dp
+
+        return combined
 #pylint: enable=invalid-name,too-few-public-methods
 
 def main():
