@@ -4,3 +4,4 @@ RCS/
 *.o
 fealc/feal-8
 fealc/FEAL8-WI-2.zip
+.*.pylint3
