@@ -136,6 +136,40 @@ class F(Node):
         return combined
 #pylint: enable=invalid-name,too-few-public-methods
 
+#pylint: disable=invalid-name,too-many-locals
+def encrypt():
+    """Binesh - 2023-08-26 have tested this against the rust version, and verified that this works."""
+    # This is basically just translated from feal4_raw from ../src/feal.rs
+    plaintext = Input("plaintext", 64)
+    keys = [Input(f"key{idx:d}", 16) for idx in range(0, 8)]
+    key0 = keys[0]
+    key1 = keys[1]
+    key2 = keys[2]
+    key3 = keys[3]
+    key4 = keys[4]
+    key5 = keys[5]
+    key6 = keys[6]
+    key7 = keys[7]
+    key8_11 = Input("key8_11", 64)
+    key12_15 = Input("key12_15", 64)
+
+    v1 = XOR(plaintext, key8_11)
+    left = Left(v1)
+    right = Right(v1)
+
+    right = XOR(left, right)
+
+    for idx in range(0, 8):
+        intermediate = F(keys[idx], right)
+        left, right = right, XOR(left, intermediate)
+
+    left = XOR(left, right)
+    combined = Concatenate(right, left) # right, left is deliberate, the algorithm _calls_ for this swap.
+    ciphertext = XOR(combined, key12_15)
+
+    return plaintext, key0, key1, key2, key3, key4, key5, key6, key7, key8_11, key12_15, ciphertext
+#pylint: enable=invalid-name,too-many-locals
+
 def main():
     inp = Input("H", 16)
     left = Left(inp)

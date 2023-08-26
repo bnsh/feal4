@@ -73,4 +73,40 @@ fn main() {
     }
 */
 
+/*
+    let mut rng = rand::thread_rng();
+    let mut keyplaintextpairs: [(u16, u32); 256] = [(0, 0); 256];
+    for (bval, aval) in keyplaintextpairs.iter_mut() {
+        *bval = rng.gen_range(0..=u16::MAX);
+        *aval = rng.gen_range(0..=u32::MAX);
+    }
+
+    for (bval, aval) in keyplaintextpairs.iter() {
+        let actual = feal::f(*bval, *aval);
+
+        println!("    test_f(0x{bval:04x}, 0x{aval:08x}, 0x{actual:08x})")
+    }
+ */
+
+/*
+    let mut rng = rand::thread_rng();
+    let mut random_numbers: [(u64, u64); 16] = [(0, 0); 16];
+
+    for (key, plaintext) in random_numbers.iter_mut() {
+        *key = rng.gen_range(0..=u64::MAX);
+        *plaintext = rng.gen_range(0..=u64::MAX);
+    }
+
+    for (key, plaintext) in random_numbers.iter() {
+        let (ka, kb) = feal::u64tou32(*key);
+        let subkeys = feal::keygen(ka, kb);
+        let ciphertext = feal::feal4_raw(subkeys, *plaintext);
+
+        print!("    test_feal8(0x{plaintext:016x}, [");
+        for subkey in subkeys.iter() {
+            print!("0x{subkey:04x}, ")
+        }
+        println!("], 0x{ciphertext:016x})");
+    }
+ */
 }

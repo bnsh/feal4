@@ -20,7 +20,9 @@ def test_f(bval, aval, expect):
     label = "success" if actual == expect else "fail"
     print(f"{label:s}: bval=0x{bval:04x}, aval=0x{aval:08x} expect=0x{expect:08x} actual=0x{actual:08x}")
 
+#pylint: disable=too-many-statements
 def main():
+    """These tests were generated from the ../src/main.rs"""
     test_f(0x6e41, 0xeadddc74, 0xdf0ddb41)
     test_f(0xec2a, 0x2deee845, 0x2cde956f)
     test_f(0x462f, 0xe2b31e0c, 0xdc554a5d)
@@ -277,6 +279,7 @@ def main():
     test_f(0xbb2a, 0x5f63b54f, 0x0361c450)
     test_f(0xaa3c, 0x021aab31, 0x9d652c79)
     test_f(0x2341, 0x2ced76d2, 0x3d2320cf)
+#pylint: enable=too-many-statements
 
 
 if __name__ == "__main__":
