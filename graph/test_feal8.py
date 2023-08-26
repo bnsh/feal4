@@ -7,6 +7,7 @@
 
 from main import encrypt
 
+#pylint: disable=too-many-locals
 def test_feal8(plaintext_value, subkeys, expect):
     assert isinstance(plaintext_value, int)
     assert isinstance(subkeys, list)
@@ -41,7 +42,7 @@ def test_feal8(plaintext_value, subkeys, expect):
     label = "success" if actual == expect else "fail"
     subkeystr = ", ".join(f"0x{subkey:04x}" for subkey in subkeys)
     print(f"{label:s}: plaintext: 0x{plaintext_value:016x} subkeys=[{subkeystr:s}] expect=0x{expect:016x} actual=0x{actual:016x}")
-
+#pylint: enable=too-many-locals
 
 def main():
     test_feal8(0x1193c8f1b31ae099, [0xcc75, 0x6c99, 0xad11, 0xdcf5, 0x0e65, 0x3c0f, 0x7ea2, 0x6fbf, 0x4231, 0xd6b2, 0x36e5, 0x06ed, 0xb482, 0xa4a6, 0xafc7, 0x7d5d, ], 0x26083f40db08d83e)

@@ -3,10 +3,15 @@
 
 """Build a _graph_ of the FEAL-8 network so that we can make an actual plot of the algorithm."""
 
-# import matplotlib.pyplot as plt
-# import networkx as nx
+import re
 
-#pylint: disable=too-few-public-methods
+def parse_rgbstr(rgbstr):
+    mtch = re.match(r'^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$', rgbstr)
+    assert mtch is not None, rgbstr
+    red, green, blue = int(mtch.group(1), 16), int(mtch.group(2), 16), int(mtch.group(3), 16)
+    return red, green, blue
+
+#pylint: disable=too-few-public-methods,too-many-instance-attributes
 class Node:
     counter = 0
     def __init__(self, name, bitsz):
@@ -15,12 +20,16 @@ class Node:
         self.inputs = []
         self.idx = Node.counter
         self.value = None
+        self.red, self.green, self.blue = parse_rgbstr("#ffffff")
         Node.counter += 1
 #pylint: enable=too-few-public-methods
 
 class Input(Node):
-#     def __init__(self, name, bitsz):
-#         super().__init__(name, bitsz)
+    def __init__(self, name, bitsz):
+        super().__init__(name, bitsz)
+        self.red, self.green, self.blue = parse_rgbstr("#87ceeb") # SkyBlue
+        if name.startswith("key"):
+            self.red, self.green, self.blue = parse_rgbstr("#ff8c00") # DarkOrange
 
     def set(self, value):
         self.value = value
@@ -28,6 +37,19 @@ class Input(Node):
     def eval(self):
         return self.value
 
+    def populate_nodes(self, depth, xpos, nodes):
+        assert isinstance(depth, int)
+        assert isinstance(xpos, int)
+        assert isinstance(nodes, dict)
+        nodes[self.idx] = {
+            "label": self.name,
+            "r": self.red, "g": self.green, "b": self.blue,
+            "x": float(xpos),
+            "y": float(depth),
+        }
+
+    def populate_edges(self, edges):
+        assert isinstance(edges, list)
 #pylint: disable=too-few-public-methods
 class XOR(Node):
     def __init__(self, nodea, nodeb):
@@ -35,9 +57,28 @@ class XOR(Node):
         super().__init__("xor", nodea.bitsz)
         self.nodea = nodea
         self.nodeb = nodeb
+        self.red, self.green, self.blue = parse_rgbstr("#90ee90") # LightGreen
 
     def eval(self):
         return self.nodea.eval() ^ self.nodeb.eval()
+
+    def populate_nodes(self, depth, xpos, nodes):
+        assert isinstance(nodes, dict)
+        nodes[self.idx] = {
+            "label": self.name,
+            "r": self.red, "g": self.green, "b": self.blue,
+            "x": float(xpos),
+            "y": float(depth),
+        }
+        self.nodea.populate_nodes(1+depth, xpos-1, nodes)
+        self.nodeb.populate_nodes(1+depth, xpos+1, nodes)
+
+    def populate_edges(self, edges):
+        assert isinstance(edges, list)
+        edges.append((self.nodea.idx, self.idx, None))
+        edges.append((self.nodeb.idx, self.idx, None))
+        self.nodea.populate_edges(edges)
+        self.nodeb.populate_edges(edges)
 #pylint: enable=too-few-public-methods
 
 #pylint: disable=too-few-public-methods
@@ -46,6 +87,7 @@ class Left(Node):
         assert node.bitsz % 2 == 0
         super().__init__("left", node.bitsz // 2)
         self.node = node
+        self.red, self.green, self.blue = parse_rgbstr("#800080") # Purple
         self.bitmask = 0
         for idx in range(0, node.bitsz):
             self.bitmask = self.bitmask << 1
@@ -54,6 +96,21 @@ class Left(Node):
 
     def eval(self):
         return (self.node.eval() & self.bitmask) >> (self.node.bitsz // 2)
+
+    def populate_nodes(self, depth, xpos, nodes):
+        assert isinstance(nodes, dict)
+        nodes[self.idx] = {
+            "label": self.name,
+            "r": self.red, "g": self.green, "b": self.blue,
+            "x": float(xpos),
+            "y": float(depth),
+        }
+        self.node.populate_nodes(1+depth, xpos-1, nodes)
+
+    def populate_edges(self, edges):
+        assert isinstance(edges, list)
+        edges.append((self.node.idx, self.idx, None))
+        self.node.populate_edges(edges)
 #pylint: enable=too-few-public-methods
 
 #pylint: disable=too-few-public-methods
@@ -62,6 +119,7 @@ class Right(Node):
         assert node.bitsz % 2 == 0
         super().__init__("right", node.bitsz // 2)
         self.node = node
+        self.red, self.green, self.blue = parse_rgbstr("#ee82ee") # Violet
         self.bitmask = 0
         for idx in range(0, node.bitsz):
             self.bitmask = self.bitmask << 1
@@ -70,6 +128,21 @@ class Right(Node):
 
     def eval(self):
         return self.node.eval() & self.bitmask
+
+    def populate_nodes(self, depth, xpos, nodes):
+        assert isinstance(nodes, dict)
+        nodes[self.idx] = {
+            "label": self.name,
+            "r": self.red, "g": self.green, "b": self.blue,
+            "x": float(xpos),
+            "y": float(depth),
+        }
+        self.node.populate_nodes(1+depth, xpos+1, nodes)
+
+    def populate_edges(self, edges):
+        assert isinstance(edges, list)
+        edges.append((self.node.idx, self.idx, None))
+        self.node.populate_edges(edges)
 #pylint: enable=too-few-public-methods
 
 #pylint: disable=too-few-public-methods
@@ -77,9 +150,28 @@ class Concatenate(Node):
     def __init__(self, nodeleft, noderight):
         super().__init__("concatenate", nodeleft.bitsz + noderight.bitsz)
         self.nodeleft, self.noderight = nodeleft, noderight
+        self.red, self.green, self.blue = parse_rgbstr("#d3d3d3") # LightGray
 
     def eval(self):
         return (self.nodeleft.eval() << self.noderight.bitsz) | self.noderight.eval()
+
+    def populate_nodes(self, depth, xpos, nodes):
+        assert isinstance(nodes, dict)
+        nodes[self.idx] = {
+            "label": self.name,
+            "r": self.red, "g": self.green, "b": self.blue,
+            "x": float(xpos),
+            "y": float(depth),
+        }
+        self.nodeleft.populate_nodes(1+depth, xpos-1, nodes)
+        self.noderight.populate_nodes(1+depth, xpos+1, nodes)
+
+    def populate_edges(self, edges):
+        assert isinstance(edges, list)
+        edges.append((self.nodeleft.idx, self.idx, None))
+        edges.append((self.noderight.idx, self.idx, None))
+        self.nodeleft.populate_edges(edges)
+        self.noderight.populate_edges(edges)
 #pylint: enable=too-few-public-methods
 
 #pylint: disable=invalid-name,too-few-public-methods
@@ -91,6 +183,7 @@ class F(Node):
         super().__init__("F", 32)
         self.subkey = subkey
         self.value = value
+        self.red, self.green, self.blue = parse_rgbstr("#f08080") # LightCoral
 
     @staticmethod
     def gx(x, a, b):
@@ -134,6 +227,24 @@ class F(Node):
         combined = (ap << 24) | (bp << 16) | (cp << 8) | dp
 
         return combined
+
+    def populate_nodes(self, depth, xpos, nodes):
+        assert isinstance(nodes, dict)
+        nodes[self.idx] = {
+            "label": self.name,
+            "r": self.red, "g": self.green, "b": self.blue,
+            "x": float(xpos),
+            "y": float(depth),
+        }
+        self.subkey.populate_nodes(1+depth, xpos+1, nodes)
+        self.value.populate_nodes(1+depth, xpos-1, nodes)
+
+    def populate_edges(self, edges):
+        assert isinstance(edges, list)
+        edges.append((self.subkey.idx, self.idx, None))
+        edges.append((self.value.idx, self.idx, None))
+        self.subkey.populate_edges(edges)
+        self.value.populate_edges(edges)
 #pylint: enable=invalid-name,too-few-public-methods
 
 #pylint: disable=invalid-name,too-many-locals
