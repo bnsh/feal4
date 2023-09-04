@@ -11,22 +11,35 @@ def parse_rgbstr(rgbstr):
     red, green, blue = int(mtch.group(1), 16), int(mtch.group(2), 16), int(mtch.group(3), 16)
     return red, green, blue
 
-#pylint: disable=too-few-public-methods,too-many-instance-attributes
+#pylint: disable=too-few-public-methods,too-many-instance-attributes,too-many-arguments
 class Node:
     counter = 0
-    def __init__(self, name, bitsz):
+    def __init__(self, name, bitsz, xpos, ypos, size=None):
         self.name = name
         self.bitsz = bitsz
         self.inputs = []
         self.idx = Node.counter
         self.value = None
         self.red, self.green, self.blue = parse_rgbstr("#ffffff")
+        self.xpos = xpos
+        self.ypos = ypos
+        self.size = size if size is not None else 0.4
         Node.counter += 1
-#pylint: enable=too-few-public-methods
+
+    def populate_nodes(self, nodes):
+        assert isinstance(nodes, dict)
+        nodes[self.idx] = {
+            "label": self.name,
+            "r": self.red, "g": self.green, "b": self.blue,
+            "x": 120 * float(self.xpos),
+            "y": -120 * float(self.ypos),
+            "size": 120 * self.size
+        }
+#pylint: enable=too-few-public-methods,too-many-arguments
 
 class Input(Node):
-    def __init__(self, name, bitsz):
-        super().__init__(name, bitsz)
+    def __init__(self, name, bitsz, **kwargs):
+        super().__init__(name, bitsz, **kwargs)
         self.red, self.green, self.blue = parse_rgbstr("#87ceeb") # SkyBlue
         if name.startswith("key"):
             self.red, self.green, self.blue = parse_rgbstr("#ff8c00") # DarkOrange
@@ -37,24 +50,13 @@ class Input(Node):
     def eval(self):
         return self.value
 
-    def populate_nodes(self, depth, xpos, nodes):
-        assert isinstance(depth, int)
-        assert isinstance(xpos, int)
-        assert isinstance(nodes, dict)
-        nodes[self.idx] = {
-            "label": self.name,
-            "r": self.red, "g": self.green, "b": self.blue,
-            "x": float(xpos),
-            "y": float(depth),
-        }
-
     def populate_edges(self, edges):
         assert isinstance(edges, list)
 #pylint: disable=too-few-public-methods
 class XOR(Node):
-    def __init__(self, nodea, nodeb):
+    def __init__(self, nodea, nodeb, **kwargs):
         assert nodea.bitsz == nodeb.bitsz
-        super().__init__("xor", nodea.bitsz)
+        super().__init__("xor", nodea.bitsz, **kwargs)
         self.nodea = nodea
         self.nodeb = nodeb
         self.red, self.green, self.blue = parse_rgbstr("#90ee90") # LightGreen
@@ -62,16 +64,10 @@ class XOR(Node):
     def eval(self):
         return self.nodea.eval() ^ self.nodeb.eval()
 
-    def populate_nodes(self, depth, xpos, nodes):
-        assert isinstance(nodes, dict)
-        nodes[self.idx] = {
-            "label": self.name,
-            "r": self.red, "g": self.green, "b": self.blue,
-            "x": float(xpos),
-            "y": float(depth),
-        }
-        self.nodea.populate_nodes(1+depth, xpos-1, nodes)
-        self.nodeb.populate_nodes(1+depth, xpos+1, nodes)
+    def populate_nodes(self, nodes):
+        super().populate_nodes(nodes)
+        self.nodea.populate_nodes(nodes)
+        self.nodeb.populate_nodes(nodes)
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
@@ -83,9 +79,9 @@ class XOR(Node):
 
 #pylint: disable=too-few-public-methods
 class Left(Node):
-    def __init__(self, node):
+    def __init__(self, node, **kwargs):
         assert node.bitsz % 2 == 0
-        super().__init__("left", node.bitsz // 2)
+        super().__init__("left", node.bitsz // 2, **kwargs)
         self.node = node
         self.red, self.green, self.blue = parse_rgbstr("#800080") # Purple
         self.bitmask = 0
@@ -97,15 +93,9 @@ class Left(Node):
     def eval(self):
         return (self.node.eval() & self.bitmask) >> (self.node.bitsz // 2)
 
-    def populate_nodes(self, depth, xpos, nodes):
-        assert isinstance(nodes, dict)
-        nodes[self.idx] = {
-            "label": self.name,
-            "r": self.red, "g": self.green, "b": self.blue,
-            "x": float(xpos),
-            "y": float(depth),
-        }
-        self.node.populate_nodes(1+depth, xpos-1, nodes)
+    def populate_nodes(self, nodes):
+        super().populate_nodes(nodes)
+        self.node.populate_nodes(nodes)
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
@@ -115,9 +105,9 @@ class Left(Node):
 
 #pylint: disable=too-few-public-methods
 class Right(Node):
-    def __init__(self, node):
+    def __init__(self, node, **kwargs):
         assert node.bitsz % 2 == 0
-        super().__init__("right", node.bitsz // 2)
+        super().__init__("right", node.bitsz // 2, **kwargs)
         self.node = node
         self.red, self.green, self.blue = parse_rgbstr("#ee82ee") # Violet
         self.bitmask = 0
@@ -129,15 +119,9 @@ class Right(Node):
     def eval(self):
         return self.node.eval() & self.bitmask
 
-    def populate_nodes(self, depth, xpos, nodes):
-        assert isinstance(nodes, dict)
-        nodes[self.idx] = {
-            "label": self.name,
-            "r": self.red, "g": self.green, "b": self.blue,
-            "x": float(xpos),
-            "y": float(depth),
-        }
-        self.node.populate_nodes(1+depth, xpos+1, nodes)
+    def populate_nodes(self, nodes):
+        super().populate_nodes(nodes)
+        self.node.populate_nodes(nodes)
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
@@ -145,26 +129,61 @@ class Right(Node):
         self.node.populate_edges(edges)
 #pylint: enable=too-few-public-methods
 
+class Copy(Node):
+    def __init__(self, node, name=None, color=None, size=None, **kwargs):
+        super().__init__(name or ".", node.bitsz, size=0.2 if size is None else size, **kwargs)
+        self.node = node
+        self.red, self.green, self.blue = parse_rgbstr(color or "#d3d3d3") # LightGray
+
+    def eval(self):
+        return self.node.eval()
+
+    def populate_nodes(self, nodes):
+        super().populate_nodes(nodes)
+        self.node.populate_nodes(nodes)
+
+    def populate_edges(self, edges):
+        assert isinstance(edges, list)
+        edges.append((self.node.idx, self.idx, None))
+        self.node.populate_edges(edges)
+
 #pylint: disable=too-few-public-methods
 class Concatenate(Node):
-    def __init__(self, nodeleft, noderight):
-        super().__init__("concatenate", nodeleft.bitsz + noderight.bitsz)
+    def __init__(self, nodeleft, noderight, **kwargs):
+        super().__init__("concatenate", nodeleft.bitsz + noderight.bitsz, **kwargs)
         self.nodeleft, self.noderight = nodeleft, noderight
         self.red, self.green, self.blue = parse_rgbstr("#d3d3d3") # LightGray
 
     def eval(self):
         return (self.nodeleft.eval() << self.noderight.bitsz) | self.noderight.eval()
 
-    def populate_nodes(self, depth, xpos, nodes):
-        assert isinstance(nodes, dict)
-        nodes[self.idx] = {
-            "label": self.name,
-            "r": self.red, "g": self.green, "b": self.blue,
-            "x": float(xpos),
-            "y": float(depth),
-        }
-        self.nodeleft.populate_nodes(1+depth, xpos-1, nodes)
-        self.noderight.populate_nodes(1+depth, xpos+1, nodes)
+    def populate_nodes(self, nodes):
+        super().populate_nodes(nodes)
+        self.nodeleft.populate_nodes(nodes)
+        self.noderight.populate_nodes(nodes)
+
+    def populate_edges(self, edges):
+        assert isinstance(edges, list)
+        edges.append((self.nodeleft.idx, self.idx, None))
+        edges.append((self.noderight.idx, self.idx, None))
+        self.nodeleft.populate_edges(edges)
+        self.noderight.populate_edges(edges)
+#pylint: enable=too-few-public-methods
+
+#pylint: disable=too-few-public-methods
+class Swap(Node):
+    def __init__(self, nodeleft, noderight, **kwargs):
+        super().__init__("swap", nodeleft.bitsz + noderight.bitsz, **kwargs)
+        self.nodeleft, self.noderight = nodeleft, noderight
+        self.red, self.green, self.blue = parse_rgbstr("#d3d3d3") # LightGray
+
+    def eval(self):
+        return (self.noderight.eval() << self.nodeleft.bitsz) | self.nodeleft.eval()
+
+    def populate_nodes(self, nodes):
+        super().populate_nodes(nodes)
+        self.nodeleft.populate_nodes(nodes)
+        self.noderight.populate_nodes(nodes)
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
@@ -177,10 +196,10 @@ class Concatenate(Node):
 #pylint: disable=invalid-name,too-few-public-methods
 class F(Node):
     """Binesh - 2023-08-25 have tested this against the rust version, and verified that this works."""
-    def __init__(self, subkey, value):
+    def __init__(self, subkey, value, **kwargs):
         assert subkey.bitsz == 16
         assert value.bitsz == 32
-        super().__init__("F", 32)
+        super().__init__("F", 32, **kwargs)
         self.subkey = subkey
         self.value = value
         self.red, self.green, self.blue = parse_rgbstr("#f08080") # LightCoral
@@ -228,16 +247,10 @@ class F(Node):
 
         return combined
 
-    def populate_nodes(self, depth, xpos, nodes):
-        assert isinstance(nodes, dict)
-        nodes[self.idx] = {
-            "label": self.name,
-            "r": self.red, "g": self.green, "b": self.blue,
-            "x": float(xpos),
-            "y": float(depth),
-        }
-        self.subkey.populate_nodes(1+depth, xpos+1, nodes)
-        self.value.populate_nodes(1+depth, xpos-1, nodes)
+    def populate_nodes(self, nodes):
+        super().populate_nodes(nodes)
+        self.subkey.populate_nodes(nodes)
+        self.value.populate_nodes(nodes)
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
@@ -251,8 +264,8 @@ class F(Node):
 def encrypt():
     """Binesh - 2023-08-26 have tested this against the rust version, and verified that this works."""
     # This is basically just translated from feal4_raw from ../src/feal.rs
-    plaintext = Input("plaintext", 64)
-    keys = [Input(f"key{idx:d}", 16) for idx in range(0, 8)]
+    plaintext = Input("plaintext", 64, xpos=0, ypos=0)
+    keys = [Input(f"key{idx:d}", 16, xpos=3, ypos=5+(idx*5)+0) for idx in range(0, 8)]
     key0 = keys[0]
     key1 = keys[1]
     key2 = keys[2]
@@ -261,22 +274,29 @@ def encrypt():
     key5 = keys[5]
     key6 = keys[6]
     key7 = keys[7]
-    key8_11 = Input("key8_11", 64)
-    key12_15 = Input("key12_15", 64)
+    key8_11 = Input("key8_11", 64, xpos=3, ypos=1)
+    key12_15 = Input("key12_15", 64, xpos=3, ypos=47)
 
-    v1 = XOR(plaintext, key8_11)
-    left = Left(v1)
-    right = Right(v1)
+    v1 = XOR(plaintext, key8_11, xpos=0, ypos=1)
+    copy = Copy(v1, xpos=0, ypos=2)
 
-    right = XOR(left, right)
+    left = Left(copy, xpos=-1, ypos=3)
+    right = Right(copy, xpos=1, ypos=3)
 
+    left = Copy(left, xpos=-1, ypos=4)
+    right = XOR(left, right, xpos=1, ypos=4)
+
+    starty = 5
     for idx in range(0, 8):
-        intermediate = F(keys[idx], right)
-        left, right = right, XOR(left, intermediate)
+        right = Copy(right, xpos=1, ypos=starty+(idx*5)+1)
+        intermediate = F(Copy(keys[idx], xpos=0, ypos=starty+(idx*5)+0), right, xpos=0, ypos=starty+(idx*5)+1)
+        concatenated = Swap(Copy(XOR(left, intermediate, xpos=-1, ypos=starty+(idx*5)+1), xpos=-1, ypos=starty+(idx*5)+2), Copy(right, xpos=1, ypos=starty+(idx*5)+2), xpos=0, ypos=starty+(idx*5)+3)
+        left, right = Left(concatenated, xpos=-1, ypos=starty+(idx*5)+4), Right(concatenated, xpos=1, ypos=starty+(idx*5)+4)
 
-    left = XOR(left, right)
-    combined = Concatenate(right, left) # right, left is deliberate, the algorithm _calls_ for this swap.
-    ciphertext = XOR(combined, key12_15)
+    right = Copy(right, xpos=1, ypos=45)
+    left = XOR(left, right, xpos=-1, ypos=45)
+    combined = Swap(left, right, xpos=0, ypos=46)
+    ciphertext = Copy(XOR(combined, key12_15, xpos=0, ypos=47), name="ciphertext", color="#00008b", xpos=0, ypos=48, size=0.4) # DarkBlue
 
     return plaintext, key0, key1, key2, key3, key4, key5, key6, key7, key8_11, key12_15, ciphertext
 #pylint: enable=invalid-name,too-many-locals

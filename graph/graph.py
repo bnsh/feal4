@@ -3,6 +3,7 @@
 
 """Finally draw the graph."""
 
+import os
 import xml.etree.ElementTree as ET
 
 import networkx as nx
@@ -51,12 +52,12 @@ def main():
     nodes = {}
     edges = []
 
-    ciphertext.populate_nodes(0, 0, nodes)
+    ciphertext.populate_nodes(nodes)
     ciphertext.populate_edges(edges)
     graph = create_graph(nodes, edges)
     nx.write_graphml(graph, "graph-tmp.graphml")
     translate_keys("graph-tmp.graphml", "graph.graphml")
-    # os.unlink("graph-tmp.graphml")
+    os.unlink("graph-tmp.graphml")
 
 if __name__ == "__main__":
     main()
