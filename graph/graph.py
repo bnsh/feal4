@@ -4,6 +4,7 @@
 """Finally draw the graph."""
 
 import os
+import json
 import xml.etree.ElementTree as ET
 
 import networkx as nx
@@ -47,6 +48,16 @@ def translate_keys(srcfn, dstfn):
 
     tree.write(dstfn, encoding='UTF-8', xml_declaration=True)
 
+def convert_node(node):
+    red, green, blue = node["r"], node["g"], node["b"]
+    return {
+        "color": f"#{red:02x}{green:02x}{blue:02x}",
+        "label": node["label"],
+        "size": node["size"],
+        "x": node["x"],
+        "y": node["y"],
+    }
+
 def main():
     dummy_plaintext, dummy_key0, dummy_key1, dummy_key2, dummy_key3, dummy_key4, dummy_key5, dummy_key6, dummy_key7, dummy_key8_11, dummy_key12_15, ciphertext = encrypt()
     nodes = {}
@@ -58,6 +69,10 @@ def main():
     nx.write_graphml(graph, "graph-tmp.graphml")
     translate_keys("graph-tmp.graphml", "graph.graphml")
     os.unlink("graph-tmp.graphml")
+
+    with open("graph-tmp.json", "wt", encoding="utf-8") as jsfp:
+        json.dump({"nodes": {key: convert_node(node) for key, node in nodes.items()}, "edges": [{"src": src, "dst": dst, "label": label} for src, dst, label in edges]}, jsfp, indent=4, sort_keys=True)
+    os.rename("graph-tmp.json", "graph.json")
 
 if __name__ == "__main__":
     main()
