@@ -71,7 +71,7 @@ def main():
     os.unlink("graph-tmp.graphml")
 
     with open("graph-tmp.json", "wt", encoding="utf-8") as jsfp:
-        json.dump({"nodes": {key: convert_node(node) for key, node in nodes.items()}, "edges": [{"src": src, "dst": dst, "label": label} for src, dst, label in edges]}, jsfp, indent=4, sort_keys=True)
+        json.dump({"nodes": {key: convert_node(node) for key, node in nodes.items()}, "edges": [{"src": src, "dst": dst, "label": label} for src, dst, label in sorted(set(edges))]}, jsfp, indent=4, sort_keys=True)
     os.rename("graph-tmp.json", "graph.json")
 
 if __name__ == "__main__":
