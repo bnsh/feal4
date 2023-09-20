@@ -11,18 +11,16 @@ use gloo_net::http::Request;
 
 use yew::html;
 use yew::html::Html;
-use yew::functional::{use_state, UseStateHandle, use_effect_with_deps};
+use yew::functional::{use_state, use_effect_with_deps};
 use yew::functional::function_component;
-use yew::Callback;
 
 use serde::{Deserialize, Serialize};
-use wasm_bindgen_futures::spawn_local;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Edge {
     src: i32,
     dst: i32,
-    label: String,
+    label: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -31,7 +29,7 @@ struct Node {
     x: f32,
     y: f32,
     size: f32,
-    label: String,
+    label: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -47,17 +45,17 @@ fn App() -> Html {
     {
         let graph = graph.clone();
         use_effect_with_deps(move |_| {
-            let graph_clone = graph.clone();
-            let task: FetchTask = FetchService::fetch(
-                Request::get("/graph.json").body(yew::format::Nothing).unwrap(),
-                Callback::from(move |response: yew::services::fetch::Response<Json<Result<Graph, anyhow::Error>>>| {
-                    if let (meta, Json(Ok(body))) = response.into_parts() {
-                        if meta.status.is_success() {
-                            graph_clone.set(Some(body));
-                        }
-                    }
-                }),
-            ).expect("Failed to start request");
+            let graph = graph.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                let fetched_graph: Graph = Request::get("/graph.json")
+                    .send()
+                    .await
+                    .unwrap()
+                    .json()
+                    .await
+                    .unwrap();
+                graph.set(Some(fetched_graph));
+            });
             || ()
         }, ());
     }
