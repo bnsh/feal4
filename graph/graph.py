@@ -55,7 +55,7 @@ def convert_node(node):
         "label": node["label"],
         "size": node["size"],
         "x": node["x"],
-        "y": node["y"],
+        "y": -node["y"],
     }
 
 def main():
