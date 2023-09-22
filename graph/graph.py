@@ -52,10 +52,11 @@ def convert_node(node):
     red, green, blue = node["r"], node["g"], node["b"]
     return {
         "color": f"#{red:02x}{green:02x}{blue:02x}",
-        "label": node["label"],
+        "label": node["label"] if node["label"] != "." else None,
         "size": node["size"],
         "x": node["x"],
         "y": -node["y"],
+        "radius": 1 if node["label"] == "." else 20
     }
 
 def main():
