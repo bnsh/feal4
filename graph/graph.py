@@ -56,6 +56,7 @@ def convert_node(node):
         "size": node["size"],
         "x": node["x"],
         "y": -node["y"],
+        "bitsize": node["bitsize"],
         "radius": 1 if node["label"] == "." else 20
     }
 

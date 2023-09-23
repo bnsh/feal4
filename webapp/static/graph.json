@@ -563,6 +563,7 @@
     ],
     "nodes": {
         "0": {
+            "bitsize": 64,
             "color": "#87ceeb",
             "label": "plaintext",
             "radius": 20,
@@ -571,6 +572,7 @@
             "y": 0.0
         },
         "1": {
+            "bitsize": 16,
             "color": "#ff8c00",
             "label": "key0",
             "radius": 20,
@@ -579,6 +581,7 @@
             "y": 600.0
         },
         "2": {
+            "bitsize": 16,
             "color": "#ff8c00",
             "label": "key1",
             "radius": 20,
@@ -587,6 +590,7 @@
             "y": 1200.0
         },
         "3": {
+            "bitsize": 16,
             "color": "#ff8c00",
             "label": "key2",
             "radius": 20,
@@ -595,6 +599,7 @@
             "y": 1800.0
         },
         "4": {
+            "bitsize": 16,
             "color": "#ff8c00",
             "label": "key3",
             "radius": 20,
@@ -603,6 +608,7 @@
             "y": 2400.0
         },
         "5": {
+            "bitsize": 16,
             "color": "#ff8c00",
             "label": "key4",
             "radius": 20,
@@ -611,6 +617,7 @@
             "y": 3000.0
         },
         "6": {
+            "bitsize": 16,
             "color": "#ff8c00",
             "label": "key5",
             "radius": 20,
@@ -619,6 +626,7 @@
             "y": 3600.0
         },
         "7": {
+            "bitsize": 16,
             "color": "#ff8c00",
             "label": "key6",
             "radius": 20,
@@ -627,6 +635,7 @@
             "y": 4200.0
         },
         "8": {
+            "bitsize": 16,
             "color": "#ff8c00",
             "label": "key7",
             "radius": 20,
@@ -635,6 +644,7 @@
             "y": 4800.0
         },
         "9": {
+            "bitsize": 64,
             "color": "#ff8c00",
             "label": "key8_11",
             "radius": 20,
@@ -643,6 +653,7 @@
             "y": 120.0
         },
         "10": {
+            "bitsize": 64,
             "color": "#ff8c00",
             "label": "key12_15",
             "radius": 20,
@@ -651,6 +662,7 @@
             "y": 5640.0
         },
         "11": {
+            "bitsize": 64,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -659,6 +671,7 @@
             "y": 120.0
         },
         "12": {
+            "bitsize": 64,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -667,6 +680,7 @@
             "y": 240.0
         },
         "13": {
+            "bitsize": 32,
             "color": "#800080",
             "label": "left",
             "radius": 20,
@@ -675,6 +689,7 @@
             "y": 360.0
         },
         "14": {
+            "bitsize": 32,
             "color": "#ee82ee",
             "label": "right",
             "radius": 20,
@@ -683,6 +698,7 @@
             "y": 360.0
         },
         "15": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -691,6 +707,7 @@
             "y": 480.0
         },
         "16": {
+            "bitsize": 32,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -699,6 +716,7 @@
             "y": 480.0
         },
         "17": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -707,6 +725,7 @@
             "y": 720.0
         },
         "18": {
+            "bitsize": 16,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -715,6 +734,7 @@
             "y": 600.0
         },
         "19": {
+            "bitsize": 32,
             "color": "#f08080",
             "label": "F",
             "radius": 20,
@@ -723,6 +743,7 @@
             "y": 720.0
         },
         "20": {
+            "bitsize": 32,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -731,6 +752,7 @@
             "y": 720.0
         },
         "21": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -739,6 +761,7 @@
             "y": 840.0
         },
         "22": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -747,6 +770,7 @@
             "y": 840.0
         },
         "23": {
+            "bitsize": 64,
             "color": "#d3d3d3",
             "label": "swap",
             "radius": 20,
@@ -755,6 +779,7 @@
             "y": 960.0
         },
         "24": {
+            "bitsize": 32,
             "color": "#800080",
             "label": "left",
             "radius": 20,
@@ -763,6 +788,7 @@
             "y": 1080.0
         },
         "25": {
+            "bitsize": 32,
             "color": "#ee82ee",
             "label": "right",
             "radius": 20,
@@ -771,6 +797,7 @@
             "y": 1080.0
         },
         "26": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -779,6 +806,7 @@
             "y": 1320.0
         },
         "27": {
+            "bitsize": 16,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -787,6 +815,7 @@
             "y": 1200.0
         },
         "28": {
+            "bitsize": 32,
             "color": "#f08080",
             "label": "F",
             "radius": 20,
@@ -795,6 +824,7 @@
             "y": 1320.0
         },
         "29": {
+            "bitsize": 32,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -803,6 +833,7 @@
             "y": 1320.0
         },
         "30": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -811,6 +842,7 @@
             "y": 1440.0
         },
         "31": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -819,6 +851,7 @@
             "y": 1440.0
         },
         "32": {
+            "bitsize": 64,
             "color": "#d3d3d3",
             "label": "swap",
             "radius": 20,
@@ -827,6 +860,7 @@
             "y": 1560.0
         },
         "33": {
+            "bitsize": 32,
             "color": "#800080",
             "label": "left",
             "radius": 20,
@@ -835,6 +869,7 @@
             "y": 1680.0
         },
         "34": {
+            "bitsize": 32,
             "color": "#ee82ee",
             "label": "right",
             "radius": 20,
@@ -843,6 +878,7 @@
             "y": 1680.0
         },
         "35": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -851,6 +887,7 @@
             "y": 1920.0
         },
         "36": {
+            "bitsize": 16,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -859,6 +896,7 @@
             "y": 1800.0
         },
         "37": {
+            "bitsize": 32,
             "color": "#f08080",
             "label": "F",
             "radius": 20,
@@ -867,6 +905,7 @@
             "y": 1920.0
         },
         "38": {
+            "bitsize": 32,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -875,6 +914,7 @@
             "y": 1920.0
         },
         "39": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -883,6 +923,7 @@
             "y": 2040.0
         },
         "40": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -891,6 +932,7 @@
             "y": 2040.0
         },
         "41": {
+            "bitsize": 64,
             "color": "#d3d3d3",
             "label": "swap",
             "radius": 20,
@@ -899,6 +941,7 @@
             "y": 2160.0
         },
         "42": {
+            "bitsize": 32,
             "color": "#800080",
             "label": "left",
             "radius": 20,
@@ -907,6 +950,7 @@
             "y": 2280.0
         },
         "43": {
+            "bitsize": 32,
             "color": "#ee82ee",
             "label": "right",
             "radius": 20,
@@ -915,6 +959,7 @@
             "y": 2280.0
         },
         "44": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -923,6 +968,7 @@
             "y": 2520.0
         },
         "45": {
+            "bitsize": 16,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -931,6 +977,7 @@
             "y": 2400.0
         },
         "46": {
+            "bitsize": 32,
             "color": "#f08080",
             "label": "F",
             "radius": 20,
@@ -939,6 +986,7 @@
             "y": 2520.0
         },
         "47": {
+            "bitsize": 32,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -947,6 +995,7 @@
             "y": 2520.0
         },
         "48": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -955,6 +1004,7 @@
             "y": 2640.0
         },
         "49": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -963,6 +1013,7 @@
             "y": 2640.0
         },
         "50": {
+            "bitsize": 64,
             "color": "#d3d3d3",
             "label": "swap",
             "radius": 20,
@@ -971,6 +1022,7 @@
             "y": 2760.0
         },
         "51": {
+            "bitsize": 32,
             "color": "#800080",
             "label": "left",
             "radius": 20,
@@ -979,6 +1031,7 @@
             "y": 2880.0
         },
         "52": {
+            "bitsize": 32,
             "color": "#ee82ee",
             "label": "right",
             "radius": 20,
@@ -987,6 +1040,7 @@
             "y": 2880.0
         },
         "53": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -995,6 +1049,7 @@
             "y": 3120.0
         },
         "54": {
+            "bitsize": 16,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1003,6 +1058,7 @@
             "y": 3000.0
         },
         "55": {
+            "bitsize": 32,
             "color": "#f08080",
             "label": "F",
             "radius": 20,
@@ -1011,6 +1067,7 @@
             "y": 3120.0
         },
         "56": {
+            "bitsize": 32,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -1019,6 +1076,7 @@
             "y": 3120.0
         },
         "57": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1027,6 +1085,7 @@
             "y": 3240.0
         },
         "58": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1035,6 +1094,7 @@
             "y": 3240.0
         },
         "59": {
+            "bitsize": 64,
             "color": "#d3d3d3",
             "label": "swap",
             "radius": 20,
@@ -1043,6 +1103,7 @@
             "y": 3360.0
         },
         "60": {
+            "bitsize": 32,
             "color": "#800080",
             "label": "left",
             "radius": 20,
@@ -1051,6 +1112,7 @@
             "y": 3480.0
         },
         "61": {
+            "bitsize": 32,
             "color": "#ee82ee",
             "label": "right",
             "radius": 20,
@@ -1059,6 +1121,7 @@
             "y": 3480.0
         },
         "62": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1067,6 +1130,7 @@
             "y": 3720.0
         },
         "63": {
+            "bitsize": 16,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1075,6 +1139,7 @@
             "y": 3600.0
         },
         "64": {
+            "bitsize": 32,
             "color": "#f08080",
             "label": "F",
             "radius": 20,
@@ -1083,6 +1148,7 @@
             "y": 3720.0
         },
         "65": {
+            "bitsize": 32,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -1091,6 +1157,7 @@
             "y": 3720.0
         },
         "66": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1099,6 +1166,7 @@
             "y": 3840.0
         },
         "67": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1107,6 +1175,7 @@
             "y": 3840.0
         },
         "68": {
+            "bitsize": 64,
             "color": "#d3d3d3",
             "label": "swap",
             "radius": 20,
@@ -1115,6 +1184,7 @@
             "y": 3960.0
         },
         "69": {
+            "bitsize": 32,
             "color": "#800080",
             "label": "left",
             "radius": 20,
@@ -1123,6 +1193,7 @@
             "y": 4080.0
         },
         "70": {
+            "bitsize": 32,
             "color": "#ee82ee",
             "label": "right",
             "radius": 20,
@@ -1131,6 +1202,7 @@
             "y": 4080.0
         },
         "71": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1139,6 +1211,7 @@
             "y": 4320.0
         },
         "72": {
+            "bitsize": 16,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1147,6 +1220,7 @@
             "y": 4200.0
         },
         "73": {
+            "bitsize": 32,
             "color": "#f08080",
             "label": "F",
             "radius": 20,
@@ -1155,6 +1229,7 @@
             "y": 4320.0
         },
         "74": {
+            "bitsize": 32,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -1163,6 +1238,7 @@
             "y": 4320.0
         },
         "75": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1171,6 +1247,7 @@
             "y": 4440.0
         },
         "76": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1179,6 +1256,7 @@
             "y": 4440.0
         },
         "77": {
+            "bitsize": 64,
             "color": "#d3d3d3",
             "label": "swap",
             "radius": 20,
@@ -1187,6 +1265,7 @@
             "y": 4560.0
         },
         "78": {
+            "bitsize": 32,
             "color": "#800080",
             "label": "left",
             "radius": 20,
@@ -1195,6 +1274,7 @@
             "y": 4680.0
         },
         "79": {
+            "bitsize": 32,
             "color": "#ee82ee",
             "label": "right",
             "radius": 20,
@@ -1203,6 +1283,7 @@
             "y": 4680.0
         },
         "80": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1211,6 +1292,7 @@
             "y": 4920.0
         },
         "81": {
+            "bitsize": 16,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1219,6 +1301,7 @@
             "y": 4800.0
         },
         "82": {
+            "bitsize": 32,
             "color": "#f08080",
             "label": "F",
             "radius": 20,
@@ -1227,6 +1310,7 @@
             "y": 4920.0
         },
         "83": {
+            "bitsize": 32,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -1235,6 +1319,7 @@
             "y": 4920.0
         },
         "84": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1243,6 +1328,7 @@
             "y": 5040.0
         },
         "85": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1251,6 +1337,7 @@
             "y": 5040.0
         },
         "86": {
+            "bitsize": 64,
             "color": "#d3d3d3",
             "label": "swap",
             "radius": 20,
@@ -1259,6 +1346,7 @@
             "y": 5160.0
         },
         "87": {
+            "bitsize": 32,
             "color": "#800080",
             "label": "left",
             "radius": 20,
@@ -1267,6 +1355,7 @@
             "y": 5280.0
         },
         "88": {
+            "bitsize": 32,
             "color": "#ee82ee",
             "label": "right",
             "radius": 20,
@@ -1275,6 +1364,7 @@
             "y": 5280.0
         },
         "89": {
+            "bitsize": 32,
             "color": "#d3d3d3",
             "label": null,
             "radius": 1,
@@ -1283,6 +1373,7 @@
             "y": 5400.0
         },
         "90": {
+            "bitsize": 32,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -1291,6 +1382,7 @@
             "y": 5400.0
         },
         "91": {
+            "bitsize": 64,
             "color": "#d3d3d3",
             "label": "swap",
             "radius": 20,
@@ -1299,6 +1391,7 @@
             "y": 5520.0
         },
         "92": {
+            "bitsize": 64,
             "color": "#90ee90",
             "label": "xor",
             "radius": 20,
@@ -1307,6 +1400,7 @@
             "y": 5640.0
         },
         "93": {
+            "bitsize": 64,
             "color": "#00008b",
             "label": "ciphertext",
             "radius": 20,

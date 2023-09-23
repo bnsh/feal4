@@ -33,6 +33,8 @@ struct Node {
     y: f32,
     radius: f32,
     size: f32,
+    value: Option<i64>,
+    bitsize: i32,
     label: Option<String>,
 }
 
@@ -63,6 +65,13 @@ fn compute_size(graph: &Graph) -> (f32, f32, f32, f32) {
     (min_x, max_x, min_y, max_y)
 }
 
+fn hexstr(value: i64, bitsize: i32) -> String {
+    let hex_str = format!("{:x}", value);
+    let required_chars = bitsize / 4;
+    let padded_str = format!("{:0>width$}", hex_str, width = required_chars as usize);
+    format!("0x{}", padded_str)
+}
+
 fn grab_svg_nodes(nodes: &HashMap<i32, Node>) -> Vec<Html> {
     let svg_nodes : Vec<Html> = nodes.iter().map(|(_nodeid, node)| {
         let (realx, realy) = (node.x, node.y);
@@ -71,11 +80,14 @@ fn grab_svg_nodes(nodes: &HashMap<i32, Node>) -> Vec<Html> {
         let r_str = format!("{}", node.radius);
         let fill_str = format!("{}", node.color);
         let label_str = format!("{}", node.label.as_ref().unwrap_or(&"".to_string()));
+        let value = hexstr(node.value.unwrap_or(0x0), node.bitsize);
+
         html! {
             <>
                 <circle cx={cx_str.clone()} cy={cy_str.clone()} r={r_str} fill={fill_str} />
                 <text x={cx_str.clone()} y={cy_str.clone()} font-family="Arial" font-size="10" fill="black" text-anchor="middle" dy=".3em">{label_str}</text>
-                <rect x={format!("{}", realx-50.0)} y={format!("{}", realy+21.)} width="100" height="50" rx="10" ry="10" fill="white" stroke="black"/>
+                <rect x={format!("{}", realx-56.0)} y={format!("{}", realy+21.)} width="112" height="50" rx="10" ry="10" fill="white" stroke="black"/>
+                <text x={format!("{}", realx)} y={format!("{}", realy+46.)} font-family="Arial" font-size="10" fill="black" text-anchor="middle" dy=".3em">{value}</text>
             </>
         }
     }).collect();
@@ -108,7 +120,7 @@ fn handle(graph: &Graph) -> Html {
     let (minx, maxx, miny, maxy) = compute_size(graph);
     log!(JsValue::from_str(&serde_json::to_string(&vec![minx, maxx, miny, maxy]).unwrap()));
     let scale = 1.0;
-    let margin = 50.0;
+    let margin = 100.0;
     let width = maxx - minx; let width_s = format!("{}", ((width + 2.0 * margin) as i32));
     let height = maxy - miny; let height_s = format!("{}", ((height + 100.0 + 2.0 * margin) as i32));
     /*

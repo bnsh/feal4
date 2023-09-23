@@ -33,7 +33,8 @@ class Node:
             "r": self.red, "g": self.green, "b": self.blue,
             "x": 120 * float(self.xpos),
             "y": -120 * float(self.ypos),
-            "size": 120 * self.size
+            "size": 120 * self.size,
+            "bitsize": self.bitsz
         }
 #pylint: enable=too-few-public-methods,too-many-arguments
 
