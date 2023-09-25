@@ -72,8 +72,8 @@ class XOR(Node):
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
-        edges.append((self.nodea.idx, self.idx, None))
-        edges.append((self.nodeb.idx, self.idx, None))
+        edges.append((self.nodea.idx, self.idx, "a"))
+        edges.append((self.nodeb.idx, self.idx, "b"))
         self.nodea.populate_edges(edges)
         self.nodeb.populate_edges(edges)
 #pylint: enable=too-few-public-methods
@@ -100,7 +100,7 @@ class Left(Node):
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
-        edges.append((self.node.idx, self.idx, None))
+        edges.append((self.node.idx, self.idx, "src"))
         self.node.populate_edges(edges)
 #pylint: enable=too-few-public-methods
 
@@ -126,7 +126,7 @@ class Right(Node):
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
-        edges.append((self.node.idx, self.idx, None))
+        edges.append((self.node.idx, self.idx, "src"))
         self.node.populate_edges(edges)
 #pylint: enable=too-few-public-methods
 
@@ -145,7 +145,7 @@ class Copy(Node):
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
-        edges.append((self.node.idx, self.idx, None))
+        edges.append((self.node.idx, self.idx, "src"))
         self.node.populate_edges(edges)
 
 #pylint: disable=too-few-public-methods
@@ -165,8 +165,8 @@ class Concatenate(Node):
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
-        edges.append((self.nodeleft.idx, self.idx, None))
-        edges.append((self.noderight.idx, self.idx, None))
+        edges.append((self.nodeleft.idx, self.idx, "left"))
+        edges.append((self.noderight.idx, self.idx, "right"))
         self.nodeleft.populate_edges(edges)
         self.noderight.populate_edges(edges)
 #pylint: enable=too-few-public-methods
@@ -188,8 +188,8 @@ class Swap(Node):
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
-        edges.append((self.nodeleft.idx, self.idx, None))
-        edges.append((self.noderight.idx, self.idx, None))
+        edges.append((self.nodeleft.idx, self.idx, "left"))
+        edges.append((self.noderight.idx, self.idx, "right"))
         self.nodeleft.populate_edges(edges)
         self.noderight.populate_edges(edges)
 #pylint: enable=too-few-public-methods
@@ -255,8 +255,8 @@ class F(Node):
 
     def populate_edges(self, edges):
         assert isinstance(edges, list)
-        edges.append((self.subkey.idx, self.idx, None))
-        edges.append((self.value.idx, self.idx, None))
+        edges.append((self.subkey.idx, self.idx, "subkey"))
+        edges.append((self.value.idx, self.idx, "value"))
         self.subkey.populate_edges(edges)
         self.value.populate_edges(edges)
 #pylint: enable=invalid-name,too-few-public-methods
