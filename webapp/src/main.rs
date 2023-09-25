@@ -23,7 +23,7 @@ use wasm_bindgen::JsValue;
 struct Edge {
     src: i32,
     dst: i32,
-    label: Option<String>,
+    label: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -33,9 +33,10 @@ struct Node {
     y: f32,
     radius: f32,
     size: f32,
-    value: Option<i64>,
+    #[serde(default)]
+    value: i64,
     bitsize: i32,
-    label: Option<String>,
+    label: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -79,8 +80,8 @@ fn grab_svg_nodes(nodes: &HashMap<i32, Node>) -> Vec<Html> {
         let cy_str = format!("{}", (realy as i32));
         let r_str = format!("{}", node.radius);
         let fill_str = format!("{}", node.color);
-        let label_str = format!("{}", node.label.as_ref().unwrap_or(&"".to_string()));
-        let value = hexstr(node.value.unwrap_or(0x0), node.bitsize);
+        let label_str = format!("{}", node.label);
+        let value = hexstr(node.value, node.bitsize);
 
         html! {
             <>
