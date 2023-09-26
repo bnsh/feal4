@@ -14,7 +14,7 @@ use yew::{
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
-    pub differential_id: i64
+    pub differential: i64
 }
 
 #[function_component(Graph)]
