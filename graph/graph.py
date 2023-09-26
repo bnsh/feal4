@@ -5,7 +5,7 @@
 
 import os
 import json
-from collections import Counter, defaultdict
+from collections import Counter
 import xml.etree.ElementTree as ET
 
 import networkx as nx
@@ -70,19 +70,15 @@ def convert_node(key, edges, node):
     return retval
 
 def make_enum(fname, edges, nodes):
-    """
-        Generate the Rust Enum.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(tag = "type")]
-enum IncomingEdges {
-    F { subkey: i32, value: i32 },
+    """Generate the Rust Enum."""
 
-    #[serde(rename = "xor")]
-    Xor { a: i32, b: i32 },
-}
-    """
-
-    types = defaultdict(set)
+    ordering = {}
+    types = {}
+    for idx, node in nodes.items():
+        label = node["label"]
+        types[label] = set()
+        if label not in ordering:
+            ordering[label] = idx
     for node_label, incoming_label in sorted([(node["label"], incoming_label) for key, node in nodes.items() for src, dst, incoming_label in edges if dst == key]):
         types[node_label].add(incoming_label)
 
@@ -91,12 +87,12 @@ enum IncomingEdges {
     def depstr(dependencies):
         return ", ".join(f"{dep:s}: i32" for dep in sorted(dependencies))
 
-    guts = ",\n\n    ".join([f"#[serde(rename = \"{converter(node_type):s}\")]\n    {converter(node_type).capitalize():s} {{{depstr(dependencies):s}}}" for node_type, dependencies in types.items()])
+    guts = ",\n\n    ".join([f"#[serde(rename = \"{converter(node_type):s}\")]\n    {converter(node_type).capitalize():s} {{{depstr(dependencies):s}}}" for node_type, dependencies in sorted(types.items(), key=lambda x: ordering[x[0]])])
     with open(fname, "wt", encoding="utf-8") as rfp:
         rfp.write(f"""
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "type")]
-enum IncomingEdges {{
+enum ComputationGraph {{
     {guts:s}
 }}
 """)
@@ -121,7 +117,7 @@ def main():
         assert all(node["id"] == idx for idx, node in enumerate(arr))
     os.rename("graph-tmp.json", "graph.json")
 
-    make_enum("incoming_edges.rs", edges, nodes)
+    make_enum("computation_graph.rs", edges, nodes)
 #pylint: enable=too-many-locals
 
 
