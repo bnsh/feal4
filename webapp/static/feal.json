@@ -1,0 +1,1412 @@
+{
+    "edges": [
+        {
+            "dst": 11,
+            "label": "a",
+            "src": 0
+        },
+        {
+            "dst": 18,
+            "label": "src",
+            "src": 1
+        },
+        {
+            "dst": 27,
+            "label": "src",
+            "src": 2
+        },
+        {
+            "dst": 36,
+            "label": "src",
+            "src": 3
+        },
+        {
+            "dst": 45,
+            "label": "src",
+            "src": 4
+        },
+        {
+            "dst": 54,
+            "label": "src",
+            "src": 5
+        },
+        {
+            "dst": 63,
+            "label": "src",
+            "src": 6
+        },
+        {
+            "dst": 72,
+            "label": "src",
+            "src": 7
+        },
+        {
+            "dst": 81,
+            "label": "src",
+            "src": 8
+        },
+        {
+            "dst": 11,
+            "label": "b",
+            "src": 9
+        },
+        {
+            "dst": 92,
+            "label": "b",
+            "src": 10
+        },
+        {
+            "dst": 12,
+            "label": "src",
+            "src": 11
+        },
+        {
+            "dst": 13,
+            "label": "src",
+            "src": 12
+        },
+        {
+            "dst": 14,
+            "label": "src",
+            "src": 12
+        },
+        {
+            "dst": 15,
+            "label": "src",
+            "src": 13
+        },
+        {
+            "dst": 16,
+            "label": "b",
+            "src": 14
+        },
+        {
+            "dst": 16,
+            "label": "a",
+            "src": 15
+        },
+        {
+            "dst": 20,
+            "label": "a",
+            "src": 15
+        },
+        {
+            "dst": 17,
+            "label": "src",
+            "src": 16
+        },
+        {
+            "dst": 19,
+            "label": "value",
+            "src": 17
+        },
+        {
+            "dst": 22,
+            "label": "src",
+            "src": 17
+        },
+        {
+            "dst": 19,
+            "label": "subkey",
+            "src": 18
+        },
+        {
+            "dst": 20,
+            "label": "b",
+            "src": 19
+        },
+        {
+            "dst": 21,
+            "label": "src",
+            "src": 20
+        },
+        {
+            "dst": 23,
+            "label": "left",
+            "src": 21
+        },
+        {
+            "dst": 23,
+            "label": "right",
+            "src": 22
+        },
+        {
+            "dst": 24,
+            "label": "src",
+            "src": 23
+        },
+        {
+            "dst": 25,
+            "label": "src",
+            "src": 23
+        },
+        {
+            "dst": 29,
+            "label": "a",
+            "src": 24
+        },
+        {
+            "dst": 26,
+            "label": "src",
+            "src": 25
+        },
+        {
+            "dst": 28,
+            "label": "value",
+            "src": 26
+        },
+        {
+            "dst": 31,
+            "label": "src",
+            "src": 26
+        },
+        {
+            "dst": 28,
+            "label": "subkey",
+            "src": 27
+        },
+        {
+            "dst": 29,
+            "label": "b",
+            "src": 28
+        },
+        {
+            "dst": 30,
+            "label": "src",
+            "src": 29
+        },
+        {
+            "dst": 32,
+            "label": "left",
+            "src": 30
+        },
+        {
+            "dst": 32,
+            "label": "right",
+            "src": 31
+        },
+        {
+            "dst": 33,
+            "label": "src",
+            "src": 32
+        },
+        {
+            "dst": 34,
+            "label": "src",
+            "src": 32
+        },
+        {
+            "dst": 38,
+            "label": "a",
+            "src": 33
+        },
+        {
+            "dst": 35,
+            "label": "src",
+            "src": 34
+        },
+        {
+            "dst": 37,
+            "label": "value",
+            "src": 35
+        },
+        {
+            "dst": 40,
+            "label": "src",
+            "src": 35
+        },
+        {
+            "dst": 37,
+            "label": "subkey",
+            "src": 36
+        },
+        {
+            "dst": 38,
+            "label": "b",
+            "src": 37
+        },
+        {
+            "dst": 39,
+            "label": "src",
+            "src": 38
+        },
+        {
+            "dst": 41,
+            "label": "left",
+            "src": 39
+        },
+        {
+            "dst": 41,
+            "label": "right",
+            "src": 40
+        },
+        {
+            "dst": 42,
+            "label": "src",
+            "src": 41
+        },
+        {
+            "dst": 43,
+            "label": "src",
+            "src": 41
+        },
+        {
+            "dst": 47,
+            "label": "a",
+            "src": 42
+        },
+        {
+            "dst": 44,
+            "label": "src",
+            "src": 43
+        },
+        {
+            "dst": 46,
+            "label": "value",
+            "src": 44
+        },
+        {
+            "dst": 49,
+            "label": "src",
+            "src": 44
+        },
+        {
+            "dst": 46,
+            "label": "subkey",
+            "src": 45
+        },
+        {
+            "dst": 47,
+            "label": "b",
+            "src": 46
+        },
+        {
+            "dst": 48,
+            "label": "src",
+            "src": 47
+        },
+        {
+            "dst": 50,
+            "label": "left",
+            "src": 48
+        },
+        {
+            "dst": 50,
+            "label": "right",
+            "src": 49
+        },
+        {
+            "dst": 51,
+            "label": "src",
+            "src": 50
+        },
+        {
+            "dst": 52,
+            "label": "src",
+            "src": 50
+        },
+        {
+            "dst": 56,
+            "label": "a",
+            "src": 51
+        },
+        {
+            "dst": 53,
+            "label": "src",
+            "src": 52
+        },
+        {
+            "dst": 55,
+            "label": "value",
+            "src": 53
+        },
+        {
+            "dst": 58,
+            "label": "src",
+            "src": 53
+        },
+        {
+            "dst": 55,
+            "label": "subkey",
+            "src": 54
+        },
+        {
+            "dst": 56,
+            "label": "b",
+            "src": 55
+        },
+        {
+            "dst": 57,
+            "label": "src",
+            "src": 56
+        },
+        {
+            "dst": 59,
+            "label": "left",
+            "src": 57
+        },
+        {
+            "dst": 59,
+            "label": "right",
+            "src": 58
+        },
+        {
+            "dst": 60,
+            "label": "src",
+            "src": 59
+        },
+        {
+            "dst": 61,
+            "label": "src",
+            "src": 59
+        },
+        {
+            "dst": 65,
+            "label": "a",
+            "src": 60
+        },
+        {
+            "dst": 62,
+            "label": "src",
+            "src": 61
+        },
+        {
+            "dst": 64,
+            "label": "value",
+            "src": 62
+        },
+        {
+            "dst": 67,
+            "label": "src",
+            "src": 62
+        },
+        {
+            "dst": 64,
+            "label": "subkey",
+            "src": 63
+        },
+        {
+            "dst": 65,
+            "label": "b",
+            "src": 64
+        },
+        {
+            "dst": 66,
+            "label": "src",
+            "src": 65
+        },
+        {
+            "dst": 68,
+            "label": "left",
+            "src": 66
+        },
+        {
+            "dst": 68,
+            "label": "right",
+            "src": 67
+        },
+        {
+            "dst": 69,
+            "label": "src",
+            "src": 68
+        },
+        {
+            "dst": 70,
+            "label": "src",
+            "src": 68
+        },
+        {
+            "dst": 74,
+            "label": "a",
+            "src": 69
+        },
+        {
+            "dst": 71,
+            "label": "src",
+            "src": 70
+        },
+        {
+            "dst": 73,
+            "label": "value",
+            "src": 71
+        },
+        {
+            "dst": 76,
+            "label": "src",
+            "src": 71
+        },
+        {
+            "dst": 73,
+            "label": "subkey",
+            "src": 72
+        },
+        {
+            "dst": 74,
+            "label": "b",
+            "src": 73
+        },
+        {
+            "dst": 75,
+            "label": "src",
+            "src": 74
+        },
+        {
+            "dst": 77,
+            "label": "left",
+            "src": 75
+        },
+        {
+            "dst": 77,
+            "label": "right",
+            "src": 76
+        },
+        {
+            "dst": 78,
+            "label": "src",
+            "src": 77
+        },
+        {
+            "dst": 79,
+            "label": "src",
+            "src": 77
+        },
+        {
+            "dst": 83,
+            "label": "a",
+            "src": 78
+        },
+        {
+            "dst": 80,
+            "label": "src",
+            "src": 79
+        },
+        {
+            "dst": 82,
+            "label": "value",
+            "src": 80
+        },
+        {
+            "dst": 85,
+            "label": "src",
+            "src": 80
+        },
+        {
+            "dst": 82,
+            "label": "subkey",
+            "src": 81
+        },
+        {
+            "dst": 83,
+            "label": "b",
+            "src": 82
+        },
+        {
+            "dst": 84,
+            "label": "src",
+            "src": 83
+        },
+        {
+            "dst": 86,
+            "label": "left",
+            "src": 84
+        },
+        {
+            "dst": 86,
+            "label": "right",
+            "src": 85
+        },
+        {
+            "dst": 87,
+            "label": "src",
+            "src": 86
+        },
+        {
+            "dst": 88,
+            "label": "src",
+            "src": 86
+        },
+        {
+            "dst": 90,
+            "label": "a",
+            "src": 87
+        },
+        {
+            "dst": 89,
+            "label": "src",
+            "src": 88
+        },
+        {
+            "dst": 90,
+            "label": "b",
+            "src": 89
+        },
+        {
+            "dst": 91,
+            "label": "right",
+            "src": 89
+        },
+        {
+            "dst": 91,
+            "label": "left",
+            "src": 90
+        },
+        {
+            "dst": 92,
+            "label": "a",
+            "src": 91
+        },
+        {
+            "dst": 93,
+            "label": "src",
+            "src": 92
+        }
+    ],
+    "nodes": {
+        "0": {
+            "bitsize": 64,
+            "color": "#87ceeb",
+            "label": "plaintext",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 0.0
+        },
+        "1": {
+            "bitsize": 16,
+            "color": "#ff8c00",
+            "label": "key0",
+            "radius": 20,
+            "size": 48.0,
+            "x": 360.0,
+            "y": 600.0
+        },
+        "2": {
+            "bitsize": 16,
+            "color": "#ff8c00",
+            "label": "key1",
+            "radius": 20,
+            "size": 48.0,
+            "x": 360.0,
+            "y": 1200.0
+        },
+        "3": {
+            "bitsize": 16,
+            "color": "#ff8c00",
+            "label": "key2",
+            "radius": 20,
+            "size": 48.0,
+            "x": 360.0,
+            "y": 1800.0
+        },
+        "4": {
+            "bitsize": 16,
+            "color": "#ff8c00",
+            "label": "key3",
+            "radius": 20,
+            "size": 48.0,
+            "x": 360.0,
+            "y": 2400.0
+        },
+        "5": {
+            "bitsize": 16,
+            "color": "#ff8c00",
+            "label": "key4",
+            "radius": 20,
+            "size": 48.0,
+            "x": 360.0,
+            "y": 3000.0
+        },
+        "6": {
+            "bitsize": 16,
+            "color": "#ff8c00",
+            "label": "key5",
+            "radius": 20,
+            "size": 48.0,
+            "x": 360.0,
+            "y": 3600.0
+        },
+        "7": {
+            "bitsize": 16,
+            "color": "#ff8c00",
+            "label": "key6",
+            "radius": 20,
+            "size": 48.0,
+            "x": 360.0,
+            "y": 4200.0
+        },
+        "8": {
+            "bitsize": 16,
+            "color": "#ff8c00",
+            "label": "key7",
+            "radius": 20,
+            "size": 48.0,
+            "x": 360.0,
+            "y": 4800.0
+        },
+        "9": {
+            "bitsize": 64,
+            "color": "#ff8c00",
+            "label": "key8_11",
+            "radius": 20,
+            "size": 48.0,
+            "x": 360.0,
+            "y": 120.0
+        },
+        "10": {
+            "bitsize": 64,
+            "color": "#ff8c00",
+            "label": "key12_15",
+            "radius": 20,
+            "size": 48.0,
+            "x": 360.0,
+            "y": 5640.0
+        },
+        "11": {
+            "bitsize": 64,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 120.0
+        },
+        "12": {
+            "bitsize": 64,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 0.0,
+            "y": 240.0
+        },
+        "13": {
+            "bitsize": 32,
+            "color": "#800080",
+            "label": "left",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 360.0
+        },
+        "14": {
+            "bitsize": 32,
+            "color": "#ee82ee",
+            "label": "right",
+            "radius": 20,
+            "size": 48.0,
+            "x": 120.0,
+            "y": 360.0
+        },
+        "15": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": -120.0,
+            "y": 480.0
+        },
+        "16": {
+            "bitsize": 32,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": 120.0,
+            "y": 480.0
+        },
+        "17": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 720.0
+        },
+        "18": {
+            "bitsize": 16,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 0.0,
+            "y": 600.0
+        },
+        "19": {
+            "bitsize": 32,
+            "color": "#f08080",
+            "label": "F",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 720.0
+        },
+        "20": {
+            "bitsize": 32,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 720.0
+        },
+        "21": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": -120.0,
+            "y": 840.0
+        },
+        "22": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 840.0
+        },
+        "23": {
+            "bitsize": 64,
+            "color": "#d3d3d3",
+            "label": "swap",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 960.0
+        },
+        "24": {
+            "bitsize": 32,
+            "color": "#800080",
+            "label": "left",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 1080.0
+        },
+        "25": {
+            "bitsize": 32,
+            "color": "#ee82ee",
+            "label": "right",
+            "radius": 20,
+            "size": 48.0,
+            "x": 120.0,
+            "y": 1080.0
+        },
+        "26": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 1320.0
+        },
+        "27": {
+            "bitsize": 16,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 0.0,
+            "y": 1200.0
+        },
+        "28": {
+            "bitsize": 32,
+            "color": "#f08080",
+            "label": "F",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 1320.0
+        },
+        "29": {
+            "bitsize": 32,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 1320.0
+        },
+        "30": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": -120.0,
+            "y": 1440.0
+        },
+        "31": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 1440.0
+        },
+        "32": {
+            "bitsize": 64,
+            "color": "#d3d3d3",
+            "label": "swap",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 1560.0
+        },
+        "33": {
+            "bitsize": 32,
+            "color": "#800080",
+            "label": "left",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 1680.0
+        },
+        "34": {
+            "bitsize": 32,
+            "color": "#ee82ee",
+            "label": "right",
+            "radius": 20,
+            "size": 48.0,
+            "x": 120.0,
+            "y": 1680.0
+        },
+        "35": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 1920.0
+        },
+        "36": {
+            "bitsize": 16,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 0.0,
+            "y": 1800.0
+        },
+        "37": {
+            "bitsize": 32,
+            "color": "#f08080",
+            "label": "F",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 1920.0
+        },
+        "38": {
+            "bitsize": 32,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 1920.0
+        },
+        "39": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": -120.0,
+            "y": 2040.0
+        },
+        "40": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 2040.0
+        },
+        "41": {
+            "bitsize": 64,
+            "color": "#d3d3d3",
+            "label": "swap",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 2160.0
+        },
+        "42": {
+            "bitsize": 32,
+            "color": "#800080",
+            "label": "left",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 2280.0
+        },
+        "43": {
+            "bitsize": 32,
+            "color": "#ee82ee",
+            "label": "right",
+            "radius": 20,
+            "size": 48.0,
+            "x": 120.0,
+            "y": 2280.0
+        },
+        "44": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 2520.0
+        },
+        "45": {
+            "bitsize": 16,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 0.0,
+            "y": 2400.0
+        },
+        "46": {
+            "bitsize": 32,
+            "color": "#f08080",
+            "label": "F",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 2520.0
+        },
+        "47": {
+            "bitsize": 32,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 2520.0
+        },
+        "48": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": -120.0,
+            "y": 2640.0
+        },
+        "49": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 2640.0
+        },
+        "50": {
+            "bitsize": 64,
+            "color": "#d3d3d3",
+            "label": "swap",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 2760.0
+        },
+        "51": {
+            "bitsize": 32,
+            "color": "#800080",
+            "label": "left",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 2880.0
+        },
+        "52": {
+            "bitsize": 32,
+            "color": "#ee82ee",
+            "label": "right",
+            "radius": 20,
+            "size": 48.0,
+            "x": 120.0,
+            "y": 2880.0
+        },
+        "53": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 3120.0
+        },
+        "54": {
+            "bitsize": 16,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 0.0,
+            "y": 3000.0
+        },
+        "55": {
+            "bitsize": 32,
+            "color": "#f08080",
+            "label": "F",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 3120.0
+        },
+        "56": {
+            "bitsize": 32,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 3120.0
+        },
+        "57": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": -120.0,
+            "y": 3240.0
+        },
+        "58": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 3240.0
+        },
+        "59": {
+            "bitsize": 64,
+            "color": "#d3d3d3",
+            "label": "swap",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 3360.0
+        },
+        "60": {
+            "bitsize": 32,
+            "color": "#800080",
+            "label": "left",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 3480.0
+        },
+        "61": {
+            "bitsize": 32,
+            "color": "#ee82ee",
+            "label": "right",
+            "radius": 20,
+            "size": 48.0,
+            "x": 120.0,
+            "y": 3480.0
+        },
+        "62": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 3720.0
+        },
+        "63": {
+            "bitsize": 16,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 0.0,
+            "y": 3600.0
+        },
+        "64": {
+            "bitsize": 32,
+            "color": "#f08080",
+            "label": "F",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 3720.0
+        },
+        "65": {
+            "bitsize": 32,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 3720.0
+        },
+        "66": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": -120.0,
+            "y": 3840.0
+        },
+        "67": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 3840.0
+        },
+        "68": {
+            "bitsize": 64,
+            "color": "#d3d3d3",
+            "label": "swap",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 3960.0
+        },
+        "69": {
+            "bitsize": 32,
+            "color": "#800080",
+            "label": "left",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 4080.0
+        },
+        "70": {
+            "bitsize": 32,
+            "color": "#ee82ee",
+            "label": "right",
+            "radius": 20,
+            "size": 48.0,
+            "x": 120.0,
+            "y": 4080.0
+        },
+        "71": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 4320.0
+        },
+        "72": {
+            "bitsize": 16,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 0.0,
+            "y": 4200.0
+        },
+        "73": {
+            "bitsize": 32,
+            "color": "#f08080",
+            "label": "F",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 4320.0
+        },
+        "74": {
+            "bitsize": 32,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 4320.0
+        },
+        "75": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": -120.0,
+            "y": 4440.0
+        },
+        "76": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 4440.0
+        },
+        "77": {
+            "bitsize": 64,
+            "color": "#d3d3d3",
+            "label": "swap",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 4560.0
+        },
+        "78": {
+            "bitsize": 32,
+            "color": "#800080",
+            "label": "left",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 4680.0
+        },
+        "79": {
+            "bitsize": 32,
+            "color": "#ee82ee",
+            "label": "right",
+            "radius": 20,
+            "size": 48.0,
+            "x": 120.0,
+            "y": 4680.0
+        },
+        "80": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 4920.0
+        },
+        "81": {
+            "bitsize": 16,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 0.0,
+            "y": 4800.0
+        },
+        "82": {
+            "bitsize": 32,
+            "color": "#f08080",
+            "label": "F",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 4920.0
+        },
+        "83": {
+            "bitsize": 32,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 4920.0
+        },
+        "84": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": -120.0,
+            "y": 5040.0
+        },
+        "85": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 5040.0
+        },
+        "86": {
+            "bitsize": 64,
+            "color": "#d3d3d3",
+            "label": "swap",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 5160.0
+        },
+        "87": {
+            "bitsize": 32,
+            "color": "#800080",
+            "label": "left",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 5280.0
+        },
+        "88": {
+            "bitsize": 32,
+            "color": "#ee82ee",
+            "label": "right",
+            "radius": 20,
+            "size": 48.0,
+            "x": 120.0,
+            "y": 5280.0
+        },
+        "89": {
+            "bitsize": 32,
+            "color": "#d3d3d3",
+            "label": "copy",
+            "radius": 1,
+            "size": 24.0,
+            "x": 120.0,
+            "y": 5400.0
+        },
+        "90": {
+            "bitsize": 32,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": -120.0,
+            "y": 5400.0
+        },
+        "91": {
+            "bitsize": 64,
+            "color": "#d3d3d3",
+            "label": "swap",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 5520.0
+        },
+        "92": {
+            "bitsize": 64,
+            "color": "#90ee90",
+            "label": "xor",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 5640.0
+        },
+        "93": {
+            "bitsize": 64,
+            "color": "#00008b",
+            "label": "ciphertext",
+            "radius": 20,
+            "size": 48.0,
+            "x": 0.0,
+            "y": 5760.0
+        }
+    }
+}
