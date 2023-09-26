@@ -1,7 +1,15 @@
+// vim: expandtab shiftwidth=4 tabstop=4:
+
+/* We're going to try to build a webasm helper
+ * to help us cryptanalyze FEAL-8. And, I guess
+ * in the process learn yew.rs.
+ */
+
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "label")]
-enum ComputationGraph {
+pub enum ComputationGraph {
     #[serde(rename = "plaintext")]
     Plaintext {},
 
@@ -35,32 +43,32 @@ enum ComputationGraph {
     #[serde(rename = "key12_15")]
     Key12_15 {},
 
-    #[serde(rename = "copy64")]
-    Copy64 {src: i64},
-
-    #[serde(rename = "right")]
-    Right {src: i64},
-
     #[serde(rename = "copy16")]
     Copy16 {src: i16},
-
-    #[serde(rename = "F")]
-    F {subkey: i16, value: i32},
 
     #[serde(rename = "copy32")]
     Copy32 {src: i32},
 
+    #[serde(rename = "copy64")]
+    Copy64 {src: i64},
+
     #[serde(rename = "left")]
     Left {src: i64},
+
+    #[serde(rename = "right")]
+    Right {src: i64},
+
+    #[serde(rename = "F")]
+    F {subkey: i16, value: i32},
 
     #[serde(rename = "xor32")]
     Xor32 {a: i32, b: i32},
 
-    #[serde(rename = "swap")]
-    Swap {left: i32, right: i32},
-
     #[serde(rename = "xor64")]
     Xor64 {a: i64, b: i64},
+
+    #[serde(rename = "swap")]
+    Swap {left: i32, right: i32},
 
     #[serde(rename = "ciphertext")]
     Ciphertext {src: i64}

@@ -19,6 +19,7 @@ use web_sys::HtmlInputElement;
 // use wasm_bindgen::JsValue;
 
 pub mod graph;
+pub mod computation_graph;
 
 
 #[function_component(App)]

@@ -49,6 +49,14 @@ def translate_keys(srcfn, dstfn):
 
     tree.write(dstfn, encoding='UTF-8', xml_declaration=True)
 
+def label_renamer(node):
+    label = node["label"]
+    if label == ".":
+        label = f"copy{node['bitsize']:d}"
+    elif label == "xor":
+        label = f"xor{node['bitsize']:d}"
+    return label
+
 def convert_node(key, edges, node):
     red, green, blue = node["r"], node["g"], node["b"]
 
@@ -59,7 +67,7 @@ def convert_node(key, edges, node):
     retval = {
         "id": key,
         "color": f"#{red:02x}{green:02x}{blue:02x}",
-        "label": node["label"] if node["label"] != "." else "copy",
+        "label": label_renamer(node),
         "size": node["size"],
         "x": node["x"],
         "y": -node["y"],
@@ -72,22 +80,22 @@ def convert_node(key, edges, node):
 def make_enum(fname, edges, nodes):
     """Generate the Rust Enum."""
 
+    def depstr(dependencies):
+        return ", ".join(f"{dep:s}: i{bitsize:d}" for dep, bitsize in sorted(dependencies))
+
     ordering = {}
     types = {}
     for idx, node in nodes.items():
-        label = node["label"]
+        label = label_renamer(node)
         types[label] = set()
         if label not in ordering:
             ordering[label] = idx
-    for node_label, incoming_label in sorted([(node["label"], incoming_label) for key, node in nodes.items() for src, dst, incoming_label in edges if dst == key]):
-        types[node_label].add(incoming_label)
+    for node_label, incoming_label, src in sorted([(label_renamer(node), incoming_label, src) for key, node in nodes.items() for src, dst, incoming_label in edges if dst == key]):
+        bitsize = nodes[src]["bitsize"]
+        types[node_label].add((incoming_label, bitsize))
 
-    def converter(node_type):
-        return node_type if node_type != "." else "copy"
-    def depstr(dependencies):
-        return ", ".join(f"{dep:s}: i32" for dep in sorted(dependencies))
 
-    guts = ",\n\n    ".join([f"#[serde(rename = \"{converter(node_type):s}\")]\n    {converter(node_type).capitalize():s} {{{depstr(dependencies):s}}}" for node_type, dependencies in sorted(types.items(), key=lambda x: ordering[x[0]])])
+    guts = ",\n\n    ".join([f"#[serde(rename = \"{node_type:s}\")]\n    {node_type.capitalize():s} {{{depstr(dependencies):s}}}" for node_type, dependencies in sorted(types.items(), key=lambda x: ordering[x[0]])])
     with open(fname, "wt", encoding="utf-8") as rfp:
         rfp.write(f"""
 #[derive(Clone, Debug, Serialize, Deserialize)]
