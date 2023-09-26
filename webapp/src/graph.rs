@@ -33,7 +33,7 @@ struct Node {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(tag = "type")]
+#[serde(tag = "label")]
 enum ComputationGraph {
     #[serde(rename = "plaintext")]
     Plaintext {},

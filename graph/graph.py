@@ -91,7 +91,7 @@ def make_enum(fname, edges, nodes):
     with open(fname, "wt", encoding="utf-8") as rfp:
         rfp.write(f"""
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(tag = "type")]
+#[serde(tag = "label")]
 enum ComputationGraph {{
     {guts:s}
 }}
