@@ -81,7 +81,7 @@ def make_enum(fname, edges, nodes):
     """Generate the Rust Enum."""
 
     def depstr(dependencies):
-        return ", ".join(f"{dep:s}: i{bitsize:d}" for dep, bitsize in sorted(dependencies))
+        return ", ".join(f"{dep:s}: i32" for dep, bitsize in sorted(dependencies))
 
     ordering = {}
     types = {}
@@ -97,7 +97,16 @@ def make_enum(fname, edges, nodes):
 
     guts = ",\n\n    ".join([f"#[serde(rename = \"{node_type:s}\")]\n    {node_type.capitalize():s} {{{depstr(dependencies):s}}}" for node_type, dependencies in sorted(types.items(), key=lambda x: ordering[x[0]])])
     with open(fname, "wt", encoding="utf-8") as rfp:
-        rfp.write(f"""
+        rfp.write(f"""// vim: expandtab shiftwidth=4 tabstop=4:
+
+/* We're going to try to build a webasm helper
+ * to help us cryptanalyze FEAL-8. And, I guess
+ * in the process learn yew.rs.
+ * Remember all the values (src, subkey, value, etc. are node _indices_ not actual _values_!
+ */
+
+use serde::{{Deserialize, Serialize}};
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "label")]
 enum ComputationGraph {{
