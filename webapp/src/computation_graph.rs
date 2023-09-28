@@ -45,32 +45,32 @@ pub enum ComputationGraph {
     Key12_15 {},
 
     #[serde(rename = "copy16")]
-    Copy16 {src: i32},
+    Copy16 {src: u32},
 
     #[serde(rename = "copy32")]
-    Copy32 {src: i32},
+    Copy32 {src: u32},
 
     #[serde(rename = "copy64")]
-    Copy64 {src: i32},
+    Copy64 {src: u32},
 
     #[serde(rename = "left")]
-    Left {src: i32},
+    Left {src: u32},
 
     #[serde(rename = "right")]
-    Right {src: i32},
+    Right {src: u32},
 
     #[serde(rename = "F")]
-    F {subkey: i32, value: i32},
+    F {subkey: u32, value: u32},
 
     #[serde(rename = "xor32")]
-    Xor32 {a: i32, b: i32},
+    Xor32 {a: u32, b: u32},
 
     #[serde(rename = "xor64")]
-    Xor64 {a: i32, b: i32},
+    Xor64 {a: u32, b: u32},
 
     #[serde(rename = "swap")]
-    Swap {left: i32, right: i32},
+    Swap {left: u32, right: u32},
 
     #[serde(rename = "ciphertext")]
-    Ciphertext {src: i32}
+    Ciphertext {src: u32}
 }

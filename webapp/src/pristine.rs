@@ -23,8 +23,8 @@ use wasm_bindgen::JsValue;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Edge {
-    src: i32,
-    dst: i32,
+    src: u32,
+    dst: u32,
     label: String,
 }
 
@@ -36,15 +36,15 @@ struct Node {
     radius: f32,
     size: f32,
     #[serde(default)]
-    value: i64,
-    bitsize: i32,
+    value: u64,
+    bitsize: u32,
     label: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Graph {
     edges: Vec<Edge>,
-    nodes: HashMap<i32, Node>,
+    nodes: HashMap<u32, Node>,
 }
 
 fn compute_size(graph: &Graph) -> (f32, f32, f32, f32) {
@@ -68,14 +68,14 @@ fn compute_size(graph: &Graph) -> (f32, f32, f32, f32) {
     (min_x, max_x, min_y, max_y)
 }
 
-fn hexstr(value: i64, bitsize: i32) -> String {
+fn hexstr(value: u64, bitsize: u32) -> String {
     let hex_str = format!("{:x}", value);
     let required_chars = bitsize / 4;
     let padded_str = format!("{:0>width$}", hex_str, width = required_chars as usize);
     format!("0x{}", padded_str)
 }
 
-fn grab_svg_nodes(nodes: &HashMap<i32, Node>) -> Vec<Html> {
+fn grab_svg_nodes(nodes: &HashMap<u32, Node>) -> Vec<Html> {
     let svg_nodes : Vec<Html> = nodes.iter().map(|(_nodeid, node)| {
         let (realx, realy) = (node.x, node.y);
         let cx_str = format!("{}", (realx as i32));

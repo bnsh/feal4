@@ -19,12 +19,13 @@ use web_sys::HtmlInputElement;
 // use wasm_bindgen::JsValue;
 
 pub mod graph;
+pub mod graph_impl;
 pub mod computation_graph;
 
 
 #[function_component(App)]
 fn app() -> Html {
-    let differential = use_state(|| 0i64);
+    let differential = use_state(|| 0u64);
     let error = use_state(|| None::<String>);
     let input_ref: NodeRef = NodeRef::default();
 
@@ -36,7 +37,7 @@ fn app() -> Html {
             let input_element: HtmlInputElement = input_ref.cast().unwrap();
             let value = &input_element.value();
 
-            match i64::from_str_radix(value, 16) {
+            match u64::from_str_radix(value, 16) {
                 Ok(num) => {
                     differential.set(num);
                     error.set(None);

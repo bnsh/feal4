@@ -102,6 +102,7 @@ version = "0.1.0"
 dependencies = [
  "gloo-console 0.3.0",
  "gloo-net 0.2.6",
+ "js-sys",
  "serde",
  "serde_json",
  "wasm-bindgen",

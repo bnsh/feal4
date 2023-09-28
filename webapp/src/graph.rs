@@ -20,23 +20,24 @@ use gloo_net::http::Request;
 use serde::{Deserialize, Serialize};
 
 use crate::computation_graph;
+use crate::graph_impl::GraphImpl;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-struct Node {
-    id: i32,
+pub struct Node {
+    id: u32,
     color: String,
     x: f32,
     y: f32,
     radius: f32,
     size: f32,
-    bitsize: i32,
+    bitsize: u32,
     #[serde(flatten)]
     compgraph: computation_graph::ComputationGraph,
 }
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
-    pub differential: i64
+    pub differential: u64
 }
 
 #[function_component(Graph)]
@@ -62,9 +63,12 @@ pub fn app(props: &Props) -> Html {
         }, ());
     }
 
+
     if let Some(graph_data) = &*graph {
+        let graph_impl = GraphImpl::new(graph_data);
+        graph_impl.pass_differential(props.differential);
         html! {
-            <div>{props.differential} {graph_data.len()}</div>
+            <div>{"differential="}{props.differential}<br />{"node_count="}{graph_data.len()}<br /></div>
         }
     }
     else {
