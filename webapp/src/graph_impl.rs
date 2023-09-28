@@ -4,7 +4,7 @@
  * feal4.
  */
 
-use wasm_bindgen::prelude::*;
+use wasm_bindgen::prelude::wasm_bindgen;
 use gloo_console::log;
 
 use crate::graph::Node;
