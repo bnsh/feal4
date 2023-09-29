@@ -122,8 +122,8 @@ impl GraphImpl {
                         </marker>
                     </defs>
                     <g transform={transform_s}>
-                        { for node_htmls.into_iter() }
                         { for edge_htmls.into_iter() }
+                        { for node_htmls.into_iter() }
                     </g>
                 </svg>
         }
