@@ -24,15 +24,15 @@ use crate::graph_impl::GraphImpl;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Node {
-    id: u32,
-    color: String,
-    x: f32,
-    y: f32,
-    radius: f32,
-    size: f32,
-    bitsize: u32,
+    pub id: u32,
+    pub color: String,
+    pub x: f32,
+    pub y: f32,
+    pub radius: f32,
+    pub size: f32,
+    pub bitsize: u32,
     #[serde(flatten)]
-    compgraph: computation_graph::ComputationGraph,
+    pub compgraph: computation_graph::ComputationGraph,
 }
 
 #[derive(Properties, Clone, PartialEq)]
@@ -68,7 +68,7 @@ pub fn app(props: &Props) -> Html {
         let graph_impl = GraphImpl::new(graph_data);
         graph_impl.pass_differential(props.differential);
         html! {
-            <div>{"differential="}{props.differential}<br />{"node_count="}{graph_data.len()}<br /></div>
+            <div>{graph_impl.render()}</div>
         }
     }
     else {

@@ -61,7 +61,9 @@ fn app() -> Html {
 
     html! {
         <div style="display: flex; align-items: flex-start; position: relative">
-            <graph::Graph differential={*differential} />
+            <div>
+                <graph::Graph differential={*differential} />
+            </div>
             <div style="position: sticky; top: 0;">
                 <label>{"Differential 0x:"}</label>
                 <input ref={input_ref.clone()} type="text" placeholder="Enter text" onkeydown={onkeydown} />
