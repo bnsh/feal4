@@ -16,6 +16,7 @@ use yew::{
 };
 
 use crate::graph::Node;
+use crate::feal::f;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "label")]
@@ -87,11 +88,17 @@ pub enum ComputationGraph {
 pub trait ComputationNode {
     fn label(&self) -> &str;
     fn node(&self) -> &Node;
-    fn eval(&self) -> u64;
+    fn eval(&self) -> (u64, u64);
     fn render_node(&self) -> Html;
     fn render_edges(&self) -> Html;
 }
 
+fn hexstr(value: u64, bitsize: u32) -> String {
+    let hex_str = format!("{:x}", value);
+    let required_chars = bitsize / 4;
+    let padded_str = format!("{:0>width$}", hex_str, width = required_chars as usize);
+    format!("0x{}", padded_str)
+}
 
 fn generic_render_node(compnode: &dyn ComputationNode) -> Html {
     let (realx, realy) = (compnode.node().x, compnode.node().y);
@@ -100,12 +107,19 @@ fn generic_render_node(compnode: &dyn ComputationNode) -> Html {
     let r_str = format!("{}", compnode.node().radius);
     let fill_str = format!("{}", compnode.node().color);
     let label_str = format!("{}", compnode.label());
+    let (path1, path2) = compnode.eval();
+    let y1 = realy + 36.0; // or some adjusted value for the first line
+    let y2 = realy + 46.0; // for the second line
+    let y3 = realy + 56.0; // for the third line
+    let differential = path1 ^ path2;
     html!(
         <>
             <circle cx={cx_str.clone()} cy={cy_str.clone()} r={r_str} fill={fill_str} />
             <text x={cx_str.clone()} y={cy_str.clone()} font-family="Arial" font-size="10" fill="black" text-anchor="middle" dy=".3em">{label_str}</text>
             <rect x={format!("{}", realx-56.0)} y={format!("{}", realy+21.)} width="112" height="50" rx="10" ry="10" fill="white" stroke="black"/>
-            <text x={format!("{}", realx)} y={format!("{}", realy+46.)} font-family="Arial" font-size="10" fill="black" text-anchor="middle" dy=".3em">{"WTF"}</text>
+            <text x={format!("{}", realx)} y={format!("{}", y1)} font-family="Arial" font-size="10" fill="black" text-anchor="middle" dy=".3em">{hexstr(path1, compnode.node().bitsize)}</text>
+            <text x={format!("{}", realx)} y={format!("{}", y2)} font-family="Arial" font-size="10" fill="black" text-anchor="middle" dy=".3em">{hexstr(path2, compnode.node().bitsize)}</text>
+            <text x={format!("{}", realx)} y={format!("{}", y3)} font-family="Arial" font-size="10" fill="red" text-anchor="middle" dy=".3em">{hexstr(differential, compnode.node().bitsize)}</text>
         </>
     )
 }
@@ -135,13 +149,15 @@ fn generic_render_edges(dst: &dyn ComputationNode, srcs: Vec<Rc<RefCell<dyn Comp
 
 pub struct Plaintext {
     pub node: Node,
+    pub differential: u64,
+    pub value: u64,
 }
 
 impl ComputationNode for Plaintext {
     fn label(&self) -> &str {"plaintext"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        (self.value, self.value ^ self.differential)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![])}
@@ -149,13 +165,14 @@ impl ComputationNode for Plaintext {
 
 pub struct Key0 {
     pub node: Node,
+    pub key: u16,
 }
 
 impl ComputationNode for Key0 {
     fn label(&self) -> &str {"key0"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        (self.key as u64, self.key as u64)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![])}
@@ -163,13 +180,14 @@ impl ComputationNode for Key0 {
 
 pub struct Key1 {
     pub node: Node,
+    pub key: u16,
 }
 
 impl ComputationNode for Key1 {
     fn label(&self) -> &str {"key1"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        (self.key as u64, self.key as u64)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![])}
@@ -177,13 +195,14 @@ impl ComputationNode for Key1 {
 
 pub struct Key2 {
     pub node: Node,
+    pub key: u16,
 }
 
 impl ComputationNode for Key2 {
     fn label(&self) -> &str {"key2"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        (self.key as u64, self.key as u64)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![])}
@@ -191,13 +210,14 @@ impl ComputationNode for Key2 {
 
 pub struct Key3 {
     pub node: Node,
+    pub key: u16,
 }
 
 impl ComputationNode for Key3 {
     fn label(&self) -> &str {"key3"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        (self.key as u64, self.key as u64)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![])}
@@ -205,13 +225,14 @@ impl ComputationNode for Key3 {
 
 pub struct Key4 {
     pub node: Node,
+    pub key: u16,
 }
 
 impl ComputationNode for Key4 {
     fn label(&self) -> &str {"key4"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        (self.key as u64, self.key as u64)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![])}
@@ -219,13 +240,14 @@ impl ComputationNode for Key4 {
 
 pub struct Key5 {
     pub node: Node,
+    pub key: u16,
 }
 
 impl ComputationNode for Key5 {
     fn label(&self) -> &str {"key5"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        (self.key as u64, self.key as u64)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![])}
@@ -233,13 +255,14 @@ impl ComputationNode for Key5 {
 
 pub struct Key6 {
     pub node: Node,
+    pub key: u16,
 }
 
 impl ComputationNode for Key6 {
     fn label(&self) -> &str {"key6"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        (self.key as u64, self.key as u64)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![])}
@@ -247,13 +270,14 @@ impl ComputationNode for Key6 {
 
 pub struct Key7 {
     pub node: Node,
+    pub key: u16,
 }
 
 impl ComputationNode for Key7 {
     fn label(&self) -> &str {"key7"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        (self.key as u64, self.key as u64)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![])}
@@ -261,13 +285,14 @@ impl ComputationNode for Key7 {
 
 pub struct Key8_11 {
     pub node: Node,
+    pub key: u64,
 }
 
 impl ComputationNode for Key8_11 {
     fn label(&self) -> &str {"key8-11"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        (self.key, self.key)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![])}
@@ -275,13 +300,14 @@ impl ComputationNode for Key8_11 {
 
 pub struct Key12_15 {
     pub node: Node,
+    pub key: u64,
 }
 
 impl ComputationNode for Key12_15 {
     fn label(&self) -> &str {"key12-15"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        (self.key, self.key)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![])}
@@ -295,9 +321,9 @@ pub struct Copy16 {
 impl ComputationNode for Copy16 {
     fn label(&self) -> &str {"copy16"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        let src = self.src.borrow().eval();
-        src & 0x00ffff
+    fn eval(&self) -> (u64, u64) {
+        let (src1, src2) = self.src.borrow().eval();
+        (src1 & 0x00ffff, src2 & 0x00ffff)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![self.src.clone()])}
@@ -311,9 +337,9 @@ pub struct Copy32 {
 impl ComputationNode for Copy32 {
     fn label(&self) -> &str {"copy32"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        let src = self.src.borrow().eval();
-        src & 0x00ffffffff
+    fn eval(&self) -> (u64, u64) {
+        let (src1, src2) = self.src.borrow().eval();
+        (src1 & 0x00ffffffff, src2 & 0x00ffffffff)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![self.src.clone()])}
@@ -327,7 +353,7 @@ pub struct Copy64 {
 impl ComputationNode for Copy64 {
     fn label(&self) -> &str {"copy64"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
+    fn eval(&self) -> (u64, u64) {
         self.src.borrow().eval()
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
@@ -342,9 +368,9 @@ pub struct Left {
 impl ComputationNode for Left {
     fn label(&self) -> &str {"left"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        let src = self.src.borrow().eval();
-        (src >> 32) & 0x00ffffffff
+    fn eval(&self) -> (u64, u64) {
+        let (src1, src2) = self.src.borrow().eval();
+        ((src1 >> 32) & 0x00ffffffff, (src2 >> 32) & 0x00ffffffff)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![self.src.clone()])}
@@ -358,9 +384,9 @@ pub struct Right {
 impl ComputationNode for Right {
     fn label(&self) -> &str {"right"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        let src = self.src.borrow().eval();
-        src & 0x00ffffffff
+    fn eval(&self) -> (u64, u64) {
+        let (src1, src2) = self.src.borrow().eval();
+        (src1 & 0x00ffffffff, src2 & 0x00ffffffff)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![self.src.clone()])}
@@ -375,8 +401,18 @@ pub struct F{
 impl ComputationNode for F {
     fn label(&self) -> &str {"F"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        0
+    fn eval(&self) -> (u64, u64) {
+        let (subkey1, subkey2) = self.subkey.borrow().eval();
+        let (value1, value2) = self.value.borrow().eval();
+        let subkey1 = subkey1 as u16;
+        let subkey2 = subkey2 as u16;
+        let value1 = value1 as u32;
+        let value2 = value2 as u32;
+
+        let output1 = f(subkey1, value1);
+        let output2 = f(subkey2, value2);
+
+        (output1.into(), output2.into())
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![self.subkey.clone(), self.value.clone()])}
@@ -391,10 +427,10 @@ pub struct Xor32 {
 impl ComputationNode for Xor32 {
     fn label(&self) -> &str {"xor32"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        let a = self.a.borrow().eval();
-        let b = self.b.borrow().eval();
-        (a ^ b) & 0x00ffffffff
+    fn eval(&self) -> (u64, u64) {
+        let (a1, a2) = self.a.borrow().eval();
+        let (b1, b2) = self.b.borrow().eval();
+        ((a1 ^ b1) & 0x00ffffffff, (a2 ^ b2) & 0x00ffffffff)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![self.a.clone(), self.b.clone()])}
@@ -409,10 +445,10 @@ pub struct Xor64 {
 impl ComputationNode for Xor64 {
     fn label(&self) -> &str {"xor64"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        let a = self.a.borrow().eval();
-        let b = self.b.borrow().eval();
-        a ^ b
+    fn eval(&self) -> (u64, u64) {
+        let (a1, a2) = self.a.borrow().eval();
+        let (b1, b2) = self.b.borrow().eval();
+        (a1 ^ b1, a2 ^ b2)
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![self.a.clone(), self.b.clone()])}
@@ -427,10 +463,16 @@ pub struct Swap {
 impl ComputationNode for Swap {
     fn label(&self) -> &str {"swap"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
-        let left = self.left.borrow().eval() & 0x00ffffffffu64;
-        let right = self.right.borrow().eval() & 0x00ffffffffu64;
-        (right << 32) | left
+    fn eval(&self) -> (u64, u64) {
+        let (left1, left2) = self.left.borrow().eval();
+        let (right1, right2) = self.right.borrow().eval();
+
+        let left1 = left1 & 0x00ffffffff;
+        let left2 = left2 & 0x00ffffffff;
+        let right1 = right1 & 0x00ffffffff;
+        let right2 = right2 & 0x00ffffffff;
+
+        (((right1 << 32) | left1), ((right2 << 32) | left2))
     }
     fn render_node(&self) -> Html {generic_render_node(self)}
     fn render_edges(&self) -> Html {generic_render_edges(self, vec![self.left.clone(), self.right.clone()])}
@@ -444,7 +486,7 @@ pub struct Ciphertext {
 impl ComputationNode for Ciphertext {
     fn label(&self) -> &str {"ciphertext"}
     fn node(&self) -> &Node {&self.node}
-    fn eval(&self) -> u64 {
+    fn eval(&self) -> (u64, u64) {
         self.src.borrow().eval()
     }
     fn render_node(&self) -> Html {generic_render_node(self)}

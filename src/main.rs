@@ -6,11 +6,18 @@
  * Actually, "Applied Cryptography" by Bruce Schneier has a section on FEAL in Chapter 13.4 (pp 308 on my copy).
  */
 
-use rand::Rng;
+// use rand::Rng;
 pub mod feal;
 
-fn main() {
+fn hexstr(value: u64, bitsize: u32) -> String {
+    let hex_str = format!("{:x}", value);
+    let required_chars = bitsize / 4;
+    let padded_str = format!("{:0>width$}", hex_str, width = required_chars as usize);
+    format!("0x{}", padded_str)
+}
+
 /*
+fn main1() {
     let mode = 0;
     if mode == 0 {
         let key = 0x0123456789abcdef;
@@ -39,9 +46,9 @@ fn main() {
         }
         println!("  }};");
     }
-*/
+}
 
-/* */
+fn main2() {
     let mut rng = rand::thread_rng();
     let mut keyplaintextpairs: [(u16, u32); 256] = [(0, 0); 256];
     for (key, plaintext) in keyplaintextpairs.iter_mut() {
@@ -58,9 +65,9 @@ fn main() {
 
         println!("{:08x} {:08x}", *plaintext ^ xoredplaintext, cipher ^ xoredcipher);
     }
-/* */
+}
 
-/*
+fn main3() {
     for key in 0..=255 {
         let plain_xor = 0x40;
         for plain1 in 0..=255 {
@@ -71,9 +78,9 @@ fn main() {
             println!("key={:02x}, p1={:02x}, p2={:02x}, {:02x}", key, plain1, plain2, cipher_xor);
         }
     }
-*/
+}
 
-/*
+fn main4() {
     let mut rng = rand::thread_rng();
     let mut keyplaintextpairs: [(u16, u32); 256] = [(0, 0); 256];
     for (bval, aval) in keyplaintextpairs.iter_mut() {
@@ -86,9 +93,9 @@ fn main() {
 
         println!("    test_f(0x{bval:04x}, 0x{aval:08x}, 0x{actual:08x})")
     }
- */
+}
 
-/*
+fn main5() {
     let mut rng = rand::thread_rng();
     let mut random_numbers: [(u64, u64); 16] = [(0, 0); 16];
 
@@ -108,5 +115,24 @@ fn main() {
         }
         println!("], 0x{ciphertext:016x})");
     }
+}
  */
+
+fn main6() {
+    let subkey: u16 = 0x015f;
+    let value1: u32 = 0xe529577a;
+    let value2: u32 = 0x6529577a;
+// 0x3a021860
+    
+    let cipher1 = feal::f(subkey, value1);
+    let cipher2 = feal::f(subkey, value2);
+    let differential = cipher1 ^ cipher2;
+
+    println!("  {}", hexstr(cipher1.into(), 32));
+    println!("  {}", hexstr(cipher2.into(), 32));
+    println!("  {}", hexstr(differential.into(), 32));
+}
+
+fn main() {
+    main6()
 }

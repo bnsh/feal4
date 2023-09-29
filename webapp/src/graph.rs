@@ -65,8 +65,7 @@ pub fn app(props: &Props) -> Html {
 
 
     if let Some(graph_data) = &*graph {
-        let graph_impl = GraphImpl::new(graph_data);
-        graph_impl.pass_differential(props.differential);
+        let graph_impl = GraphImpl::new(graph_data, props.differential);
         html! {
             <div>{graph_impl.render()}</div>
         }

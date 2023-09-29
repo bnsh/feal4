@@ -18,6 +18,7 @@ use web_sys::HtmlInputElement;
 // use gloo_console::log;
 // use wasm_bindgen::JsValue;
 
+pub mod feal;
 pub mod graph;
 pub mod graph_impl;
 pub mod computation_graph;

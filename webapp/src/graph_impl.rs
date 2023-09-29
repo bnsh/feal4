@@ -8,7 +8,7 @@ use std::rc::Rc;
 use std::cell::RefCell;
 
 use wasm_bindgen::prelude::wasm_bindgen;
-use gloo_console::log;
+// use gloo_console::log;
 
 use yew::{
     html,
@@ -55,21 +55,21 @@ pub struct GraphImpl {
 }
 
 impl GraphImpl {
-    pub fn new(graph_data: &Vec<Node>) -> GraphImpl {
+    pub fn new(graph_data: &Vec<Node>, differential: u64) -> GraphImpl {
         let mut compnodes: Vec<Rc<RefCell<dyn ComputationNode>>> = vec![];
         for node in graph_data {
             let res : Rc<RefCell<dyn ComputationNode>> = match node.compgraph {
-                ComputationGraph::Plaintext {} => Rc::new(RefCell::new(Plaintext{node: node.clone()})),
-                ComputationGraph::Key0 {} => Rc::new(RefCell::new(Key0{node: node.clone()})),
-                ComputationGraph::Key1 {} => Rc::new(RefCell::new(Key1{node: node.clone()})),
-                ComputationGraph::Key2 {} => Rc::new(RefCell::new(Key2{node: node.clone()})),
-                ComputationGraph::Key3 {} => Rc::new(RefCell::new(Key3{node: node.clone()})),
-                ComputationGraph::Key4 {} => Rc::new(RefCell::new(Key4{node: node.clone()})),
-                ComputationGraph::Key5 {} => Rc::new(RefCell::new(Key5{node: node.clone()})),
-                ComputationGraph::Key6 {} => Rc::new(RefCell::new(Key6{node: node.clone()})),
-                ComputationGraph::Key7 {} => Rc::new(RefCell::new(Key7{node: node.clone()})),
-                ComputationGraph::Key8_11 {} => Rc::new(RefCell::new(Key8_11{node: node.clone()})),
-                ComputationGraph::Key12_15 {} => Rc::new(RefCell::new(Key12_15{node: node.clone()})),
+                ComputationGraph::Plaintext {} => Rc::new(RefCell::new(Plaintext{node: node.clone(), differential: differential, value: random_u64()})),
+                ComputationGraph::Key0 {} => Rc::new(RefCell::new(Key0{node: node.clone(), key: random_u16()})),
+                ComputationGraph::Key1 {} => Rc::new(RefCell::new(Key1{node: node.clone(), key: random_u16()})),
+                ComputationGraph::Key2 {} => Rc::new(RefCell::new(Key2{node: node.clone(), key: random_u16()})),
+                ComputationGraph::Key3 {} => Rc::new(RefCell::new(Key3{node: node.clone(), key: random_u16()})),
+                ComputationGraph::Key4 {} => Rc::new(RefCell::new(Key4{node: node.clone(), key: random_u16()})),
+                ComputationGraph::Key5 {} => Rc::new(RefCell::new(Key5{node: node.clone(), key: random_u16()})),
+                ComputationGraph::Key6 {} => Rc::new(RefCell::new(Key6{node: node.clone(), key: random_u16()})),
+                ComputationGraph::Key7 {} => Rc::new(RefCell::new(Key7{node: node.clone(), key: random_u16()})),
+                ComputationGraph::Key8_11 {} => Rc::new(RefCell::new(Key8_11{node: node.clone(), key: random_u64()})),
+                ComputationGraph::Key12_15 {} => Rc::new(RefCell::new(Key12_15{node: node.clone(), key: random_u64()})),
                 ComputationGraph::Copy16 {src} => Rc::new(RefCell::new(Copy16{node: node.clone(), src: compnodes[src].clone()})),
                 ComputationGraph::Copy32 {src} => Rc::new(RefCell::new(Copy32{node: node.clone(), src: compnodes[src].clone()})),
                 ComputationGraph::Copy64 {src} => Rc::new(RefCell::new(Copy64{node: node.clone(), src: compnodes[src].clone()})),
@@ -84,14 +84,6 @@ impl GraphImpl {
             compnodes.push(res);
         }
         GraphImpl{compnodes: compnodes,}
-    }
-
-    pub fn pass_differential(&self, differential: u64) {
-        let plaintext1 = random_u64();
-        let plaintext2 = plaintext1 ^ differential;
-
-        log!(format!("plaintext1 is {}", plaintext1));
-        log!(format!("plaintext2 is {}", plaintext2));
     }
 
     pub fn compute_size(&self) -> (f32, f32, f32, f32) {
